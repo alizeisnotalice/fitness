@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>健身追踪器</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#3a86ff">
+    <meta name="theme-color" content="#eef3fb">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -687,7 +687,7 @@
         
         .app-title {
             font-size: 2.5rem;
-            font-weight: 800;
+            font-weight: 700;
             background: linear-gradient(90deg, var(--primary), var(--accent));
             -webkit-background-clip: text;
             background-clip: text;
@@ -1523,11 +1523,747 @@
                 transform: none;
             }
         }
+
+        /* ===== 视觉系统重构：Liquid Glass ===== */
+        :root {
+            --primary: #0a84ff;
+            --primary-strong: #409cff;
+            --secondary: #5e5ce6;
+            --accent: #64d2ff;
+            --dark: #111318;
+            --darker: #07090d;
+            --card-bg: rgba(255, 255, 255, 0.11);
+            --surface: rgba(255, 255, 255, 0.16);
+            --surface-soft: rgba(255, 255, 255, 0.08);
+            --line: rgba(255, 255, 255, 0.2);
+            --muted: rgba(235, 241, 255, 0.72);
+            --text: #f2f2f7;
+            --shadow: rgba(2, 8, 23, 0.36);
+            --glass-blur: 26px;
+            --glass-saturate: 165%;
+        }
+
+        [data-theme="light"] {
+            --primary: #007aff;
+            --primary-strong: #0066cc;
+            --secondary: #5856d6;
+            --accent: #32ade6;
+            --dark: #f2f2f7;
+            --darker: #e8e8ed;
+            --card-bg: rgba(255, 255, 255, 0.54);
+            --surface: rgba(255, 255, 255, 0.72);
+            --surface-soft: rgba(255, 255, 255, 0.4);
+            --line: rgba(37, 56, 89, 0.16);
+            --muted: rgba(60, 60, 67, 0.62);
+            --text: #1c1c1e;
+            --shadow: rgba(51, 76, 117, 0.16);
+        }
+
+        html {
+            background: var(--darker);
+        }
+
+        body {
+            position: relative;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+            font-weight: 400;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            background:
+                radial-gradient(circle at 12% -6%, rgba(93, 169, 255, 0.32), transparent 34rem),
+                radial-gradient(circle at 94% 18%, rgba(136, 100, 255, 0.24), transparent 30rem),
+                radial-gradient(circle at 48% 112%, rgba(38, 205, 190, 0.14), transparent 32rem),
+                var(--darker);
+            color: var(--text);
+            letter-spacing: 0.006em;
+            transition: background 0.55s ease, color 0.35s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(to bottom, black, transparent 72%);
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 8rem;
+            left: -9rem;
+            width: 19rem;
+            height: 19rem;
+            pointer-events: none;
+            background: rgba(118, 233, 220, 0.11);
+            border-radius: 42% 58% 66% 34% / 52% 38% 62% 48%;
+            filter: blur(56px);
+            animation: ambientDrift 16s ease-in-out infinite alternate;
+            z-index: 0;
+        }
+
+        @keyframes ambientDrift {
+            from { transform: translate3d(-1rem, -0.5rem, 0) rotate(-8deg); }
+            to { transform: translate3d(4rem, 2rem, 0) rotate(12deg); }
+        }
+
+        .app-container {
+            position: relative;
+            z-index: 1;
+            max-width: 1180px;
+            padding: 1rem clamp(1rem, 3vw, 2.5rem) 4rem;
+        }
+
+        .page {
+            animation: pageEnter 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .page.active {
+            animation: pageEnter 0.48s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        @keyframes pageEnter {
+            from { opacity: 0; transform: translateY(12px) scale(0.99); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .app-header {
+            position: relative;
+            padding: clamp(1.25rem, 4vw, 2.75rem) clamp(0.25rem, 2vw, 1.5rem) 1.65rem;
+            margin-bottom: 1.35rem;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.075);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            border-radius: 2rem;
+            box-shadow: 0 18px 44px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+        }
+
+        .app-header::before {
+            content: '01 / TRAINING LOG';
+            display: block;
+            margin-bottom: 0.85rem;
+            color: var(--accent);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 0.24em;
+        }
+
+        [data-theme="dark"] .app-header {
+            background: rgba(255, 255, 255, 0.075) !important;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 18px 44px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+        }
+
+        .app-title,
+        .login-page .login-title {
+            margin-bottom: 0.6rem;
+            color: var(--text);
+            background: none;
+            -webkit-text-fill-color: currentColor;
+            letter-spacing: -0.035em;
+            font-weight: 700;
+            text-shadow: 0 1px 22px rgba(159, 195, 255, 0.18);
+        }
+
+        .app-title {
+            font-size: clamp(2.35rem, 7vw, 4.7rem);
+            line-height: 0.98;
+            font-weight: 700;
+        }
+
+        .app-subtitle {
+            max-width: 34rem;
+            color: var(--muted);
+            font-size: clamp(0.9rem, 2vw, 1.05rem);
+            line-height: 1.65;
+        }
+
+        #user-area {
+            min-height: 2rem;
+        }
+
+        #sync-button {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.11);
+            border: 1px solid rgba(255, 255, 255, 0.21);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 7px 20px rgba(2, 8, 23, 0.12);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            letter-spacing: 0.02em;
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+            transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease;
+        }
+
+        #sync-button:hover {
+            color: var(--text);
+            border-color: rgba(191, 214, 255, 0.62);
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        #sync-icon {
+            color: var(--accent);
+        }
+
+        .grid-container {
+            gap: clamp(0.7rem, 1.7vw, 1.05rem);
+            margin-bottom: 1.5rem;
+        }
+
+        .muscle-card,
+        .card {
+            border: 1px solid var(--line);
+            background: var(--card-bg);
+            box-shadow: 0 18px 38px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+        }
+
+        .muscle-card {
+            height: 190px;
+            padding: 1.2rem 1.3rem 1.1rem;
+            align-items: flex-start;
+            justify-content: flex-end;
+            border-radius: 1.55rem;
+            isolation: isolate;
+            overflow: hidden;
+            transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+            animation: cardEnter 0.52s cubic-bezier(0.22, 1, 0.36, 1) both;
+        }
+
+        .muscle-card:nth-child(2) { animation-delay: 0.04s; }
+        .muscle-card:nth-child(3) { animation-delay: 0.08s; }
+        .muscle-card:nth-child(4) { animation-delay: 0.12s; }
+        .muscle-card:nth-child(5) { animation-delay: 0.16s; }
+        .muscle-card:nth-child(6) { animation-delay: 0.2s; }
+
+        @keyframes cardEnter {
+            from { opacity: 0; transform: translateY(16px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .muscle-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 36%, rgba(124, 162, 255, 0.11));
+            opacity: 0.8;
+            transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .muscle-card::after {
+            content: '';
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            width: 0.45rem;
+            height: 0.45rem;
+            border-radius: 50%;
+            background: #c7d8ff;
+            box-shadow: 0 0 0 0 rgba(168, 197, 255, 0.46);
+            animation: statusPulse 3.4s ease-out infinite;
+        }
+
+        .muscle-card:hover {
+            transform: translateY(-6px) scale(1.012);
+            border-color: rgba(205, 222, 255, 0.58);
+            background: rgba(255, 255, 255, 0.17);
+            box-shadow: 0 25px 50px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .muscle-card:hover::before {
+            opacity: 1;
+            transform: scale(1.06) rotate(1deg);
+        }
+
+        .muscle-card:active,
+        .btn:active,
+        .btn-action:active {
+            transform: translateY(-1px) scale(0.975);
+            transition-duration: 0.1s;
+        }
+
+        .muscle-card-index {
+            position: absolute;
+            top: 0.9rem;
+            left: 1.25rem;
+            color: var(--muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.68rem;
+            letter-spacing: 0.13em;
+        }
+
+        .muscle-icon {
+            align-self: flex-start;
+            margin-bottom: auto;
+            font-size: clamp(2.4rem, 5vw, 3.55rem);
+            filter: saturate(0.86) drop-shadow(0 7px 14px rgba(2, 8, 23, 0.16));
+            transform-origin: 30% 70%;
+            transition: filter 0.3s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .muscle-card:hover .muscle-icon {
+            filter: saturate(1.08) drop-shadow(0 10px 17px rgba(2, 8, 23, 0.22));
+            transform: translateY(-4px) rotate(-4deg) scale(1.06);
+        }
+
+        .muscle-name {
+            color: var(--text);
+            font-size: 1.16rem;
+            font-weight: 750;
+            letter-spacing: -0.025em;
+        }
+
+        .muscle-card-meta {
+            margin-top: 0.3rem;
+            color: var(--muted);
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.13em;
+        }
+
+        .card {
+            border-radius: 1.5rem;
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(205, 222, 255, 0.4);
+            box-shadow: 0 24px 48px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+        }
+
+        .card-header {
+            border-bottom-color: var(--line);
+        }
+
+        .card-title {
+            justify-content: flex-start;
+            color: var(--text);
+            font-size: 1.1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .card-title i {
+            color: var(--accent);
+            font-size: 0.95rem;
+        }
+
+        .text-blue-300,
+        .text-blue-400 { color: var(--primary) !important; }
+
+        .text-green-400 { color: #30d158 !important; }
+        .text-red-400 { color: #ff453a !important; }
+        .text-yellow-300,
+        .text-yellow-400 { color: #ff9f0a !important; }
+
+        .bg-green-600 { background: #30d158 !important; }
+        .bg-blue-900\/30 { background: rgba(10, 132, 255, 0.16) !important; }
+        .border-blue-600\/50 { border-color: rgba(10, 132, 255, 0.38) !important; }
+
+        .page-header {
+            border: 1px solid var(--line);
+            border-radius: 1.35rem;
+            background: rgba(255, 255, 255, 0.11) !important;
+            box-shadow: 0 14px 30px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+        }
+
+        .page-header h1 {
+            color: var(--text);
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            letter-spacing: -0.04em;
+        }
+
+        .btn {
+            min-height: 2.75rem;
+            border-radius: 1rem;
+            padding: 0.7rem 1.1rem;
+            font-weight: 700;
+            letter-spacing: 0.01em;
+            transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1), background 0.24s ease, border-color 0.24s ease, box-shadow 0.24s ease;
+        }
+
+        .btn-primary,
+        .btn-secondary {
+            color: #fff;
+            background: linear-gradient(180deg, rgba(89, 145, 255, 0.94), rgba(43, 106, 220, 0.94));
+            border: 1px solid rgba(221, 233, 255, 0.34);
+            box-shadow: 0 10px 22px rgba(31, 87, 191, 0.26), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            color: #fff;
+            background: linear-gradient(180deg, rgba(116, 166, 255, 0.98), rgba(52, 119, 232, 0.98));
+            border-color: rgba(235, 242, 255, 0.58);
+            box-shadow: 0 14px 28px rgba(31, 87, 191, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+            transform: translateY(-2px);
+        }
+
+        .btn-action {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--line);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+        }
+
+        .btn-action:hover {
+            color: var(--text);
+            border-color: rgba(205, 222, 255, 0.55);
+            background: rgba(255, 255, 255, 0.18);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.25), 0 8px 18px var(--shadow);
+        }
+
+        input,
+        select {
+            color: var(--text);
+            background: rgba(6, 9, 18, 0.2);
+            border-color: var(--line);
+            border-radius: 0.95rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(18px) saturate(130%);
+            -webkit-backdrop-filter: blur(18px) saturate(130%);
+        }
+
+        input::placeholder {
+            color: var(--muted);
+        }
+
+        input:focus,
+        select:focus {
+            border-color: rgba(166, 198, 255, 0.82);
+            box-shadow: 0 0 0 3px rgba(110, 158, 255, 0.19), inset 0 1px 0 rgba(255, 255, 255, 0.17);
+        }
+
+        .theme-toggle {
+            color: var(--text) !important;
+            background: rgba(255, 255, 255, 0.15) !important;
+            border: 1px solid var(--line);
+            box-shadow: 0 14px 30px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.26) !important;
+            backdrop-filter: blur(22px) saturate(150%);
+            -webkit-backdrop-filter: blur(22px) saturate(150%);
+            transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            color: var(--text) !important;
+            border-color: rgba(205, 222, 255, 0.62);
+            background: rgba(255, 255, 255, 0.24) !important;
+            transform: scale(1.07) rotate(8deg);
+        }
+
+        .login-page {
+            background: transparent;
+        }
+
+        .login-page .login-logo {
+            filter: drop-shadow(0 12px 24px rgba(91, 147, 255, 0.24));
+            animation: loginFloat 3.8s ease-in-out infinite;
+        }
+
+        @keyframes loginFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-8px) rotate(2deg); }
+        }
+
+        .login-page .login-title {
+            font-size: clamp(2rem, 7vw, 3rem);
+        }
+
+        .login-page .login-subtitle {
+            color: var(--muted);
+        }
+
+        .login-page .login-btn {
+            color: #fff;
+            background: rgba(23, 31, 50, 0.68);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            box-shadow: 0 15px 32px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(22px) saturate(150%);
+            -webkit-backdrop-filter: blur(22px) saturate(150%);
+        }
+
+        .login-page .login-btn:hover {
+            background: rgba(58, 77, 122, 0.72);
+            border-color: rgba(205, 222, 255, 0.62);
+            box-shadow: 0 19px 38px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+        }
+
+        .offline-login-button {
+            width: 100%;
+            margin-top: 0.65rem;
+            padding: 0.7rem 0;
+            color: var(--muted);
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            font-size: 0.88rem;
+            cursor: pointer;
+            transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease, color 0.24s ease;
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+        }
+
+        .offline-login-button:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(205, 222, 255, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .login-page .login-feature {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--line);
+            border-radius: 1rem;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+        }
+
+        .login-page .login-feature .feature-text {
+            color: var(--muted);
+        }
+
+        .workout-info-box,
+        .history-item,
+        .history-session,
+        .exercise-block,
+        .exercise-item,
+        .common-exercise-item {
+            border-color: var(--line) !important;
+            background: rgba(255, 255, 255, 0.075) !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 9px 22px rgba(2, 8, 23, 0.13);
+            backdrop-filter: blur(18px) saturate(140%);
+            -webkit-backdrop-filter: blur(18px) saturate(140%);
+        }
+
+        .loader {
+            border-color: rgba(255, 255, 255, 0.18);
+            border-top-color: var(--primary);
+        }
+
+        .modal-backdrop {
+            background: rgba(4, 7, 16, 0.48);
+            backdrop-filter: blur(16px) saturate(120%);
+            -webkit-backdrop-filter: blur(16px) saturate(120%);
+        }
+
+        .modal-content {
+            border: 1px solid var(--line);
+            border-radius: 1.75rem;
+            background: rgba(26, 35, 57, 0.74);
+            box-shadow: 0 24px 70px rgba(2, 8, 23, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(30px) saturate(160%);
+            -webkit-backdrop-filter: blur(30px) saturate(160%);
+            animation: sheetUp 0.42s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        #sw-update-banner {
+            background: rgba(39, 57, 93, 0.72) !important;
+            border-bottom: 1px solid var(--line);
+            box-shadow: 0 14px 32px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+            backdrop-filter: blur(24px) saturate(150%);
+            -webkit-backdrop-filter: blur(24px) saturate(150%);
+        }
+
+        #sw-update-banner button {
+            border-radius: 0.8rem !important;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        #sw-update-banner button:hover {
+            transform: translateY(-1px);
+        }
+
+        @keyframes sheetUp {
+            from { opacity: 0; transform: translateY(22px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes statusPulse {
+            0%, 55%, 100% { box-shadow: 0 0 0 0 rgba(168, 197, 255, 0); }
+            20% { box-shadow: 0 0 0 7px rgba(168, 197, 255, 0.15); }
+        }
+
+        [data-theme="light"] body {
+            background:
+                radial-gradient(circle at 8% -8%, rgba(117, 183, 255, 0.36), transparent 34rem),
+                radial-gradient(circle at 94% 18%, rgba(182, 160, 255, 0.28), transparent 30rem),
+                var(--darker);
+            color: var(--text);
+        }
+
+        [data-theme="light"] body::before {
+            opacity: 0.3;
+            background-image: linear-gradient(rgba(51, 74, 112, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(51, 74, 112, 0.05) 1px, transparent 1px);
+        }
+
+        [data-theme="light"] .app-header,
+        [data-theme="light"] .page-header {
+            background: rgba(255, 255, 255, 0.46) !important;
+            border-color: var(--line);
+            box-shadow: 0 18px 40px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+        }
+
+        [data-theme="light"] .card,
+        [data-theme="light"] .muscle-card {
+            border-color: var(--line);
+            background: rgba(255, 255, 255, 0.52);
+            box-shadow: 0 18px 34px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        }
+
+        [data-theme="light"] .muscle-card:hover,
+        [data-theme="light"] .card:hover {
+            background: rgba(255, 255, 255, 0.68);
+            border-color: rgba(58, 97, 166, 0.36);
+        }
+
+        [data-theme="light"] input,
+        [data-theme="light"] select {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.44);
+            border-color: var(--line);
+        }
+
+        [data-theme="light"] .modal-content {
+            background: rgba(247, 250, 255, 0.76);
+            box-shadow: 0 24px 70px rgba(48, 71, 111, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+        }
+
+        [data-theme="light"] .modal-backdrop {
+            background: rgba(46, 66, 102, 0.24);
+        }
+
+        [data-theme="light"] .workout-info-box,
+        [data-theme="light"] .history-item,
+        [data-theme="light"] .history-session,
+        [data-theme="light"] .exercise-block,
+        [data-theme="light"] .exercise-item,
+        [data-theme="light"] .common-exercise-item {
+            background: rgba(255, 255, 255, 0.42) !important;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72), 0 9px 22px rgba(50, 76, 117, 0.08);
+        }
+
+        :where(button, input, select, .muscle-card):focus-visible {
+            outline: 3px solid rgba(10, 132, 255, 0.42);
+            outline-offset: 3px;
+        }
+
+        @supports not (backdrop-filter: blur(1px)) {
+            .app-header,
+            .page-header,
+            .card,
+            .muscle-card,
+            .btn-action,
+            input,
+            select,
+            .modal-content,
+            .login-page .login-feature,
+            .offline-login-button {
+                background: rgba(25, 35, 58, 0.94);
+            }
+
+            [data-theme="light"] .app-header,
+            [data-theme="light"] .page-header,
+            [data-theme="light"] .card,
+            [data-theme="light"] .muscle-card,
+            [data-theme="light"] .btn-action,
+            [data-theme="light"] input,
+            [data-theme="light"] select,
+            [data-theme="light"] .modal-content,
+            [data-theme="light"] .login-page .login-feature,
+            [data-theme="light"] .offline-login-button {
+                background: rgba(255, 255, 255, 0.96);
+            }
+        }
+
+        @media (prefers-contrast: more) {
+            :root,
+            [data-theme="light"] {
+                --line: rgba(60, 60, 67, 0.42);
+            }
+
+            .app-header,
+            .page-header,
+            .card,
+            .muscle-card,
+            input,
+            select {
+                box-shadow: none;
+            }
+        }
+
+        @media (prefers-reduced-transparency: reduce) {
+            :root {
+                --card-bg: rgba(26, 35, 57, 0.96);
+                --surface: rgba(31, 42, 67, 0.96);
+                --surface-soft: rgba(45, 57, 83, 0.95);
+            }
+
+            [data-theme="light"] {
+                --card-bg: rgba(255, 255, 255, 0.96);
+                --surface: rgba(255, 255, 255, 0.98);
+                --surface-soft: rgba(239, 244, 252, 0.98);
+            }
+
+            body::after,
+            .app-header,
+            .page-header,
+            .card,
+            .muscle-card,
+            .login-page .login-feature,
+            .modal-content {
+                backdrop-filter: none;
+                -webkit-backdrop-filter: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .app-container { padding-top: 0.5rem; }
+            .app-header { padding-top: 1.2rem; border-radius: 1.45rem; }
+            .app-header::before { font-size: 0.58rem; letter-spacing: 0.17em; }
+            .muscle-card { height: 164px; padding: 1rem; border-radius: 1.25rem; }
+            .muscle-icon { font-size: 2.5rem; }
+            .muscle-name { font-size: 1rem; }
+            .muscle-card-meta { font-size: 0.53rem; }
+            .card { padding: 1.1rem; border-radius: 1.25rem; }
+            .page-header { margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem; border-radius: 0 0 1.25rem 1.25rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .page,
+            .muscle-card,
+            .login-page .login-logo,
+            body::after {
+                animation: none;
+            }
+            .muscle-card::after { animation: none; }
+            .muscle-card:hover .muscle-icon { transform: none; }
+            .btn:active,
+            .btn-action:active,
+            .muscle-card:active { transform: none; }
+        }
     </style>
 </head>
 <body>
     <!-- Theme Toggle Button -->
-    <button class="theme-toggle" onclick="toggleTheme(event)" title="切换主题">
+    <button class="theme-toggle" onclick="toggleTheme(event)" title="切换主题" aria-label="切换主题">
         <i class="fas fa-sun" id="theme-icon"></i>
     </button>
 
@@ -1545,9 +2281,7 @@
                     <i class="fab fa-github"></i>
                     <span>使用 GitHub 登录</span>
                 </button>
-                <button onclick="enterOfflineMode()" style="background:transparent;border:1px solid rgba(107,114,128,.5);color:#9ca3af;padding:10px 0;width:100%;border-radius:10px;font-size:14px;cursor:pointer;margin-top:10px;transition:all .2s;"
-                        onmouseover="this.style.borderColor='rgba(156,163,175,.8)';this.style.color='#d1d5db'"
-                        onmouseout="this.style.borderColor='rgba(107,114,128,.5)';this.style.color='#9ca3af'">
+                <button onclick="enterOfflineMode()" class="offline-login-button">
                     跳过登录，离线使用
                 </button>
                 <div class="login-features">
@@ -1590,33 +2324,45 @@
             
             <div class="grid-container">
                 <div class="muscle-card" onclick="showTrainingPage('chest', '胸部训练')">
+                    <span class="muscle-card-index">01</span>
                     <div class="muscle-icon">💪</div>
                     <div class="muscle-name">胸 & 三头</div>
+                    <span class="muscle-card-meta">PUSH / POWER</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showTrainingPage('back', '背部训练')">
+                    <span class="muscle-card-index">02</span>
                     <div class="muscle-icon">🚀</div>
                     <div class="muscle-name">背 & 二头</div>
+                    <span class="muscle-card-meta">PULL / CONTROL</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showTrainingPage('shoulders', '肩部训练')">
+                    <span class="muscle-card-index">03</span>
                     <div class="muscle-icon">🏋️</div>
                     <div class="muscle-name">肩部训练</div>
+                    <span class="muscle-card-meta">PRESS / FORM</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showTrainingPage('legs', '腿部训练')">
+                    <span class="muscle-card-index">04</span>
                     <div class="muscle-icon">🦵</div>
                     <div class="muscle-name">腿部训练</div>
+                    <span class="muscle-card-meta">LOWER / DRIVE</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showExerciseManagementPage()">
+                    <span class="muscle-card-index">05</span>
                     <div class="muscle-icon">⚙️</div>
                     <div class="muscle-name">动作管理</div>
+                    <span class="muscle-card-meta">LIBRARY / EDIT</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showWorkoutPlannerPage()">
+                    <span class="muscle-card-index">06</span>
                     <div class="muscle-icon">📊</div>
                     <div class="muscle-name">训练计划</div>
+                    <span class="muscle-card-meta">PLAN / PROGRESS</span>
                 </div>
             </div>
             
@@ -1729,7 +2475,8 @@
             <p class="text-gray-400 text-sm mt-1">公用动作可在所有肌肉群训练中使用</p>
         </div>
         
-        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+        <p id="common-admin-readonly-message" class="hidden text-gray-400 text-sm mb-4">公用动作由管理员维护，当前账号只读。</p>
+        <div id="common-admin-controls" class="flex flex-col sm:flex-row gap-3 mb-4">
             <input type="text" id="new-common-exercise-input" placeholder="新公用动作名称" 
                    class="flex-1 bg-gray-800 border border-gray-600 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
             <button onclick="addCommonExercise()" class="btn btn-secondary sm:w-auto w-full">
@@ -1819,6 +2566,60 @@
     <!-- JavaScript部分保持不变 -->
     <script>
         const API_BASE_URL = '';
+        function escapeHtml(value) {
+            return String(value ?? '').replace(/[&<>'"]/g, character => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[character]));
+        }
+
+        function safeInlineArg(value) {
+            return escapeHtml(JSON.stringify(String(value ?? '')));
+        }
+
+        function populateExerciseSelect(select, includePlaceholder = false) {
+            select.replaceChildren();
+            if (includePlaceholder) {
+                const placeholder = document.createElement('option');
+                placeholder.value = '';
+                placeholder.disabled = true;
+                placeholder.textContent = '-- 选择动作 --';
+                select.appendChild(placeholder);
+            }
+
+            const appendGroup = (label, names) => {
+                if (!names.length) return;
+                const group = document.createElement('optgroup');
+                group.label = label;
+                names.forEach(name => {
+                    const option = document.createElement('option');
+                    option.value = name;
+                    option.textContent = name;
+                    group.appendChild(option);
+                });
+                select.appendChild(group);
+            };
+
+            appendGroup('自定义动作', customExercises);
+            appendGroup('公用动作', commonExercises.filter(name => !customExercises.includes(name)));
+            const addNew = document.createElement('option');
+            addNew.value = 'add_new';
+            addNew.className = 'text-blue-400 font-bold';
+            addNew.textContent = includePlaceholder ? '-- 添加新动作 --' : '-- 添加动作 --';
+            select.appendChild(addNew);
+        }
+
+        function updateCommonExerciseAdminUI() {
+            const controls = document.getElementById('common-admin-controls');
+            const message = document.getElementById('common-admin-readonly-message');
+            const canManage = Boolean(currentUser && !currentUser.offline && currentUser.is_common_exercise_admin);
+            if (controls) controls.classList.toggle('hidden', !canManage);
+            if (message) message.classList.toggle('hidden', canManage);
+        }
+
         // 版本号：占位符由 scripts/deploy-frontend.js 在部署时替换为 v{version}-{git短hash}；本地开发显示 dev
         const APP_VERSION_RAW = '__APP_VERSION__';
         const APP_VERSION = APP_VERSION_RAW.startsWith('__') ? 'dev' : APP_VERSION_RAW;
@@ -2102,6 +2903,7 @@
                 if (currentUser && !currentUser.offline) {
                     currentUser = { offline: true, username: '未登录', avatar_url: null };
                     updateUserArea();
+                    updateCommonExerciseAdminUI();
                     updateSyncButtonUI('noauth');
                 }
                 throw new Error('Authentication required');
@@ -2122,13 +2924,16 @@
                     const data = await response.json();
                     currentUser = data.user;
                     localStorage.setItem('auth_remember', '1'); // 标记曾登录，供离线模式使用
+                    updateCommonExerciseAdminUI();
                     return;
                 }
                 // token过期/未登录（在线）：转离线模式，不拦截本地使用
                 currentUser = { offline: true, username: '未登录', avatar_url: null };
+                updateCommonExerciseAdminUI();
             } catch (e) {
                 // 网络不通：离线模式，直接进主页使用本地数据
                 currentUser = { offline: true, username: '离线模式', avatar_url: null };
+                updateCommonExerciseAdminUI();
             }
         }
 
@@ -2141,6 +2946,7 @@
                 await fetch(`${API_BASE_URL}/auth/logout`, { method: 'POST', credentials: 'include' });
             } catch (e) {}
             currentUser = null;
+            updateCommonExerciseAdminUI();
             localStorage.removeItem('auth_remember'); // 清除离线登录标记
             showLoginPage();
         }
@@ -2163,6 +2969,7 @@
         // 跳过登录直接离线使用（本地功能免登录）
         function enterOfflineMode() {
             currentUser = { offline: true, username: '离线模式', avatar_url: null };
+            updateCommonExerciseAdminUI();
             updateUserArea();
             showHomePage();
             updateSyncButtonUI(navigator.onLine ? 'noauth' : 'offline');
@@ -2171,26 +2978,56 @@
         function updateUserArea() {
             const userArea = document.getElementById('user-area');
             if (!userArea) return;
+            userArea.replaceChildren();
             if (currentUser) {
-                const avatarHtml = currentUser.avatar_url
-                    ? `<img src="${currentUser.avatar_url}" alt="${currentUser.username}" class="w-7 h-7 rounded-full border border-gray-500">`
-                    : `<div class="w-7 h-7 rounded-full border border-gray-500 bg-gray-600 flex items-center justify-center text-xs">👤</div>`;
-                userArea.innerHTML = `
-                    ${avatarHtml}
-                    <span class="text-sm text-gray-300 hidden sm:inline">${currentUser.offline ? (currentUser.username || '离线模式') : currentUser.username}</span>
-                    ${currentUser.offline
-                        ? `<button onclick="showLoginPage()" class="text-xs text-blue-400 hover:text-blue-300 transition-colors px-2 py-1 rounded border border-blue-500/40" title="登录后可云同步">登录</button>`
-                        : `<button onclick="logout()" class="text-xs text-gray-400 hover:text-red-400 transition-colors" title="登出">
-                            <i class="fas fa-sign-out-alt"></i>
-                           </button>`}
-                `;
+                const avatarUrl = typeof currentUser.avatar_url === 'string' && /^https:\/\//i.test(currentUser.avatar_url)
+                    ? currentUser.avatar_url
+                    : '';
+                if (avatarUrl) {
+                    const avatar = document.createElement('img');
+                    avatar.src = avatarUrl;
+                    avatar.alt = '用户头像';
+                    avatar.className = 'w-7 h-7 rounded-full border border-gray-500';
+                    userArea.appendChild(avatar);
+                } else {
+                    const avatar = document.createElement('div');
+                    avatar.className = 'w-7 h-7 rounded-full border border-gray-500 bg-gray-600 flex items-center justify-center text-xs';
+                    avatar.textContent = '👤';
+                    userArea.appendChild(avatar);
+                }
+
+                const name = document.createElement('span');
+                name.className = 'text-sm text-gray-300 hidden sm:inline';
+                name.textContent = currentUser.offline ? (currentUser.username || '离线模式') : (currentUser.username || '已登录');
+                userArea.appendChild(name);
+
+                const action = document.createElement('button');
+                action.className = currentUser.offline
+                    ? 'text-xs text-blue-400 hover:text-blue-300 transition-colors px-2 py-1 rounded border border-blue-500/40'
+                    : 'text-xs text-gray-400 hover:text-red-400 transition-colors';
+                action.title = currentUser.offline ? '登录后可云同步' : '登出';
+                action.setAttribute('aria-label', action.title);
+                if (currentUser.offline) {
+                    action.textContent = '登录';
+                    action.addEventListener('click', showLoginPage);
+                } else {
+                    const icon = document.createElement('i');
+                    icon.className = 'fas fa-sign-out-alt';
+                    action.appendChild(icon);
+                    action.addEventListener('click', logout);
+                }
+                userArea.appendChild(action);
             } else {
-                userArea.innerHTML = `
-                    <button onclick="loginWithGithub()" class="flex items-center gap-1.5 text-sm text-gray-300 hover:text-white bg-gray-700/60 hover:bg-gray-600/60 px-3 py-1.5 rounded-lg transition-colors">
-                        <i class="fab fa-github"></i>
-                        <span>登录</span>
-                    </button>
-                `;
+                const loginButton = document.createElement('button');
+                loginButton.className = 'flex items-center gap-1.5 text-sm text-gray-300 hover:text-white bg-gray-700/60 hover:bg-gray-600/60 px-3 py-1.5 rounded-lg transition-colors';
+                loginButton.setAttribute('aria-label', '使用 GitHub 登录');
+                loginButton.addEventListener('click', loginWithGithub);
+                const icon = document.createElement('i');
+                icon.className = 'fab fa-github';
+                const label = document.createElement('span');
+                label.textContent = '登录';
+                loginButton.append(icon, label);
+                userArea.appendChild(loginButton);
             }
         }
 
@@ -2451,6 +3288,7 @@
 
         async function showExerciseManagementPage() {
             showPage('exercise-management-page');
+            updateCommonExerciseAdminUI();
             // 每次进入管理页面时，清除上次选择的肌肉群，并重置列表
             document.getElementById('manage-muscle-select').value = '';
             // 重置右侧动作列表容器
@@ -2673,35 +3511,45 @@
 
         function renderCommonExercises() {
             const container = document.getElementById('common-exercises-container');
-            
+            container.replaceChildren();
             if (commonExercises.length === 0) {
-                container.innerHTML = `
-                    <p class="text-gray-500 text-center py-4">
-                        <i class="fas fa-inbox mr-2"></i>暂无公用动作
-                    </p>
-                `;
+                const empty = document.createElement('p');
+                empty.className = 'text-gray-500 text-center py-4';
+                empty.textContent = '暂无公用动作';
+                container.appendChild(empty);
                 return;
             }
-            
-            container.innerHTML = commonExercises.map(exercise => `
-                <div class="common-exercise-item flex items-center justify-between p-3 rounded-xl bg-gray-700/50 hover:bg-gray-700 transition-colors">
-                    <span class="text-white font-medium">
-                        <i class="fas fa-globe text-purple-400 mr-2"></i>${exercise}
-                    </span>
-                    <div class="flex gap-2">
-                        <button onclick="editCommonExercise('${exercise}')" 
-                                class="common-edit-btn text-blue-400 hover:text-blue-300 p-2 transition-colors"
-                                title="编辑">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button onclick="deleteCommonExercise('${exercise}')" 
-                                class="common-delete-btn text-red-400 hover:text-red-300 p-2 transition-colors"
-                                title="删除">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+
+            const canManage = Boolean(currentUser && !currentUser.offline && currentUser.is_common_exercise_admin);
+            const fragment = document.createDocumentFragment();
+            commonExercises.forEach(exercise => {
+                const row = document.createElement('div');
+                row.className = 'common-exercise-item flex items-center justify-between p-3 rounded-xl bg-gray-700/50 hover:bg-gray-700 transition-colors';
+                const label = document.createElement('span');
+                label.className = 'text-white font-medium';
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-globe text-purple-400 mr-2';
+                label.append(icon, document.createTextNode(exercise));
+                row.appendChild(label);
+                if (canManage) {
+                    const actions = document.createElement('div');
+                    actions.className = 'flex gap-2';
+                    const edit = document.createElement('button');
+                    edit.className = 'common-edit-btn text-blue-400 hover:text-blue-300 p-2 transition-colors';
+                    edit.title = '编辑';
+                    edit.innerHTML = '<i class="fas fa-edit"></i>';
+                    edit.addEventListener('click', () => editCommonExercise(exercise));
+                    const remove = document.createElement('button');
+                    remove.className = 'common-delete-btn text-red-400 hover:text-red-300 p-2 transition-colors';
+                    remove.title = '删除';
+                    remove.innerHTML = '<i class="fas fa-trash"></i>';
+                    remove.addEventListener('click', () => deleteCommonExercise(exercise));
+                    actions.append(edit, remove);
+                    row.appendChild(actions);
+                }
+                fragment.appendChild(row);
+            });
+            container.appendChild(fragment);
         }
 
         async function editCommonExercise(oldName) {
@@ -2793,15 +3641,13 @@
 
         // --- 格式化显示辅助函数 ---
         function formatSetDisplay(set, index) {
-            const weight = set.weight;
-            const reps = set.reps;
+            const weight = escapeHtml(set.weight);
+            const reps = escapeHtml(set.reps);
             const isSuperSet = (typeof weight === 'string' && weight.includes('-')) || (typeof reps === 'string' && reps.includes('-'));
             
             if (isSuperSet) {
                 // 超级组：用特殊样式显示
-                const weightStr = typeof weight === 'string' ? weight : String(weight);
-                const repsStr = typeof reps === 'string' ? reps : String(reps);
-                return `<span class="superset-badge">超级组</span> <span>${weightStr}kg</span> × <span>${repsStr}次</span>`;
+                return `<span class="superset-badge">超级组</span> <span>${weight}kg</span> × <span>${reps}次</span>`;
             } else {
                 return `<span>第${index + 1}组: ${weight}kg</span> × <span>${reps}次</span>`;
             }
@@ -2878,28 +3724,7 @@
 
                             // 填充动作选择器
                             const selectElement = exerciseDiv.querySelector('.exercise-select');
-                            let optionsHtml = '';
-                            
-                            // 自定义动作组
-                            if (customExercises.length > 0) {
-                                optionsHtml += '<optgroup label="自定义动作">';
-                                customExercises.forEach(ex => {
-                                    optionsHtml += `<option value="${ex}">${ex}</option>`;
-                                });
-                                optionsHtml += '</optgroup>';
-                            }
-                            
-                            // 公用动作组（过滤与自定义重名的，避免下拉框重复出现）
-                            if (commonExercises.length > 0) {
-                                optionsHtml += '<optgroup label="公用动作">';
-                                commonExercises.filter(ex => !customExercises.includes(ex)).forEach(ex => {
-                                    optionsHtml += `<option value="${ex}">${ex}</option>`;
-                                });
-                                optionsHtml += '</optgroup>';
-                            }
-                            
-                            optionsHtml += '<option value="add_new" class="text-blue-400 font-bold">-- 添加动作 --</option>';
-                            selectElement.innerHTML = optionsHtml;
+                            populateExerciseSelect(selectElement);
                             
                             // 如果动作名不在选项中，添加一个临时选项确保值能被设置
                             if (exercise.exercise_name && !availableExercises.includes(exercise.exercise_name)) {
@@ -2922,9 +3747,9 @@
                                 setDiv.className = 'set-item flex items-center gap-2';
                                 setDiv.innerHTML = `
                                     <span class="text-gray-400 w-12 text-sm">第${i + 1}组</span>
-                                    <input type="text" placeholder="重量(kg)" value="${set.weight}" class="set-weight w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
+                                    <input type="text" placeholder="重量(kg)" value="${escapeHtml(set.weight)}" class="set-weight w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
                                     <span class="text-gray-500">x</span>
-                                    <input type="text" placeholder="次数" value="${set.reps}" class="set-reps w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
+                                    <input type="text" placeholder="次数" value="${escapeHtml(set.reps)}" class="set-reps w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
                                     <button onclick="this.parentElement.remove(); updateSetNumbers('${exerciseId}'); saveSessionToLocalStorage();" class="text-red-600 p-1 text-lg">×</button>
                                 `;
                                 setsContainer.appendChild(setDiv);
@@ -2997,28 +3822,7 @@
             const selects = document.querySelectorAll('.exercise-select');
             selects.forEach(select => {
                 const currentValue = select.value; // 保存当前选中的值
-                let optionsHtml = '';
-                
-                // 自定义动作组
-                if (customExercises.length > 0) {
-                    optionsHtml += '<optgroup label="自定义动作">';
-                    customExercises.forEach(ex => {
-                        optionsHtml += `<option value="${ex}">${ex}</option>`;
-                    });
-                    optionsHtml += '</optgroup>';
-                }
-                
-                // 公用动作组（过滤与自定义重名的，避免下拉框重复出现）
-                if (commonExercises.length > 0) {
-                    optionsHtml += '<optgroup label="公用动作">';
-                    commonExercises.filter(ex => !customExercises.includes(ex)).forEach(ex => {
-                        optionsHtml += `<option value="${ex}">${ex}</option>`;
-                    });
-                    optionsHtml += '</optgroup>';
-                }
-                
-                optionsHtml += '<option value="add_new" class="text-blue-400 font-bold">-- 添加新动作 --</option>';
-                select.innerHTML = optionsHtml;
+                populateExerciseSelect(select);
                 if (currentValue && currentValue !== 'add_new') {
                     // 如果当前值不在选项中，添加临时选项确保值能被恢复
                     if (!availableExercises.includes(currentValue)) {
@@ -3195,23 +3999,40 @@
             const tooltip = document.createElement('div');
             tooltip.className = 'last-workout-tooltip';
             tooltip.id = 'last-workout-tooltip';
-            
-            let setsHtml = data.sets_data.map((set, i) => {
+
+            const header = document.createElement('div');
+            header.className = 'tooltip-header';
+            header.textContent = '📚 上次训练参考';
+            tooltip.appendChild(header);
+            const date = document.createElement('div');
+            date.className = 'tooltip-date';
+            date.textContent = data.session_date || '未知日期';
+            tooltip.appendChild(date);
+
+            data.sets_data.forEach((set, i) => {
                 const weight = set.weight;
                 const reps = set.reps;
                 const isSuperSet = (typeof weight === 'string' && weight.includes('-')) || (typeof reps === 'string' && reps.includes('-'));
+                const row = document.createElement('div');
+                row.className = isSuperSet ? 'tooltip-set tooltip-superset' : 'tooltip-set';
                 if (isSuperSet) {
-                    return `<div class="tooltip-set tooltip-superset"><span class="superset-badge">超级组</span> ${weight}kg × ${reps}次</div>`;
+                    const badge = document.createElement('span');
+                    badge.className = 'superset-badge';
+                    badge.textContent = '超级组';
+                    row.appendChild(badge);
                 }
-                return `<div class="tooltip-set">第${i + 1}组: <span>${weight}kg</span> × <span>${reps}次</span></div>`;
-            }).join('');
-            
-            tooltip.innerHTML = `
-                <div class="tooltip-header">📚 上次训练参考</div>
-                <div class="tooltip-date">${data.session_date || '未知日期'}</div>
-                ${setsHtml}
-            `;
-            
+                const label = document.createElement('span');
+                label.textContent = isSuperSet ? ` ${weight}kg × ${reps}次` : `第${i + 1}组: `;
+                row.appendChild(label);
+                if (!isSuperSet) {
+                    const weightText = document.createElement('span');
+                    weightText.textContent = `${weight}kg`;
+                    const repsText = document.createElement('span');
+                    repsText.textContent = ` ${reps}次`;
+                    row.append(weightText, document.createTextNode(' × '), repsText);
+                }
+                tooltip.appendChild(row);
+            });
             document.body.appendChild(tooltip);
             
             // 2秒后自动消失
@@ -3274,33 +4095,9 @@
 
         // 为新添加的动作选择频率最高但未选择过的动作
         function updateExerciseDropdownForNewExercise(select) {
-            let optionsHtml = '';
-            // 占位选项：无推荐动作时保持未选择状态（避免自动选中公用动作）
-            optionsHtml += '<option value="" disabled>-- 选择动作 --</option>';
-
             // 获取已选择的动作列表
             const selectedExercises = Array.from(document.querySelectorAll('.exercise-select')).map(s => s.value).filter(v => v && v !== 'add_new');
-
-            // 自定义动作组
-            if (customExercises.length > 0) {
-                optionsHtml += '<optgroup label="自定义动作">';
-                customExercises.forEach(ex => {
-                    optionsHtml += `<option value="${ex}">${ex}</option>`;
-                });
-                optionsHtml += '</optgroup>';
-            }
-
-            // 公用动作组（过滤与自定义重名的，避免下拉框重复出现）
-            if (commonExercises.length > 0) {
-                optionsHtml += '<optgroup label="公用动作">';
-                commonExercises.filter(ex => !customExercises.includes(ex)).forEach(ex => {
-                    optionsHtml += `<option value="${ex}">${ex}</option>`;
-                });
-                optionsHtml += '</optgroup>';
-            }
-
-            optionsHtml += '<option value="add_new" class="text-blue-400 font-bold">-- 添加新动作 --</option>';
-            select.innerHTML = optionsHtml;
+            populateExerciseSelect(select, true);
 
             // 高频推荐：只从「自定义动作」中选（公用动作不参与推荐，仅供手动选择）
             const recommendable = customExercises.filter(ex => !selectedExercises.includes(ex));
@@ -3577,15 +4374,15 @@
                     html += `
                         <div class="history-session bg-gray-700/50 p-4 rounded-lg border border-gray-600/50">
                             <div class="flex justify-between items-center border-b border-gray-600 pb-2 mb-3">
-                                <h3 class="font-bold text-lg text-blue-300">${session.session_date}</h3>
-                                <button onclick="deleteSession('${session.uid}')" class="text-gray-500 hover:text-red-400 text-xl">🗑️</button>
+                                <h3 class="font-bold text-lg text-blue-300">${escapeHtml(session.session_date)}</h3>
+                                <button onclick="deleteSession(${safeInlineArg(session.uid)})" class="text-gray-500 hover:text-red-400 text-xl">🗑️</button>
                             </div>
                             <div class="space-y-3">
                     `;
                     session.exercises_data.forEach(workout => {
                         html += `
                                     <div>
-                                        <p class="font-semibold text-white">${workout.exercise_name}</p>
+                                        <p class="font-semibold text-white">${escapeHtml(workout.exercise_name)}</p>
                                         <div class="text-sm text-gray-300 pl-4 border-l-2 border-gray-600 mt-1 ml-1">
                                             ${workout.sets_data.map((s, i) => formatSetDisplay(s, i)).join('<br>')}
                                         </div>
@@ -3604,7 +4401,7 @@
                 if (loader) loader.style.display = 'none'; // 隐藏加载动画
                 else console.warn("History loader element was null during error handling.");
                 // 在加载失败时，也给这个消息一个ID
-                historyContainer.insertAdjacentHTML('beforeend', `<p id="load-error-message" class="text-red-400 text-center py-4">加载失败: ${error.message}</p>`);
+                historyContainer.insertAdjacentHTML('beforeend', `<p id="load-error-message" class="text-red-400 text-center py-4">加载失败: ${escapeHtml(error.message || '未知错误')}</p>`);
             }
         }
 
@@ -3694,42 +4491,43 @@
                     return;
                 }
 
-                let html = '';
-
                 // 只显示自定义动作（公用动作在单独的公用动作管理区域）
                 if (customExercises.length > 0) {
+                    const fragment = document.createDocumentFragment();
                     customExercises.forEach(ex => {
-                        html += `
-                            <div class="exercise-item flex items-center justify-between bg-gray-800 p-3 rounded-lg border border-gray-600 mb-2">
-                                <span class="text-white text-lg flex-grow mr-2">${ex}</span>
-                                <div class="flex gap-2">
-                                    <button onclick="editExercise('${muscle}', '${ex}')"
-                                            class="exercise-edit-btn text-blue-400 hover:text-blue-300 p-2 transition-colors"
-                                            title="编辑">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button onclick="deleteExerciseFromManagement('${muscle}', '${ex}')"
-                                            class="exercise-delete-btn text-red-400 hover:text-red-300 p-2 transition-colors"
-                                            title="删除">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        `;
+                        const row = document.createElement('div');
+                        row.className = 'exercise-item flex items-center justify-between bg-gray-800 p-3 rounded-lg border border-gray-600 mb-2';
+                        const label = document.createElement('span');
+                        label.className = 'text-white text-lg flex-grow mr-2';
+                        label.textContent = ex;
+                        const actions = document.createElement('div');
+                        actions.className = 'flex gap-2';
+                        const edit = document.createElement('button');
+                        edit.className = 'exercise-edit-btn text-blue-400 hover:text-blue-300 p-2 transition-colors';
+                        edit.title = '编辑';
+                        edit.innerHTML = '<i class="fas fa-edit"></i>';
+                        edit.addEventListener('click', () => editExercise(muscle, ex));
+                        const remove = document.createElement('button');
+                        remove.className = 'exercise-delete-btn text-red-400 hover:text-red-300 p-2 transition-colors';
+                        remove.title = '删除';
+                        remove.innerHTML = '<i class="fas fa-trash"></i>';
+                        remove.addEventListener('click', () => deleteExerciseFromManagement(muscle, ex));
+                        actions.append(edit, remove);
+                        row.append(label, actions);
+                        fragment.appendChild(row);
                     });
+                    exerciseListContainer.appendChild(fragment);
                 } else if (commonExercises.length > 0) {
                     // 如果没有自定义动作但有公用动作，显示提示
-                    html += '<p class="text-gray-500 text-center py-4">该肌肉群暂无自定义动作，请添加。公用动作请在下方"公用动作管理"区域查看。</p>';
+                    exerciseListContainer.insertAdjacentHTML('beforeend', '<p class="text-gray-500 text-center py-4">该肌肉群暂无自定义动作，请添加。公用动作请在下方"公用动作管理"区域查看。</p>');
                 }
-
-                exerciseListContainer.insertAdjacentHTML('beforeend', html);
 
                 // 在线时后台同步刷新
                 if (navigator.onLine && currentUser && !syncManager.syncing) syncManager.sync();
             } catch (error) {
                 if (exerciseListLoader) exerciseListLoader.style.display = 'none';
                 else console.warn("Management loader element was null during error handling.");
-                exerciseListContainer.insertAdjacentHTML('beforeend', `<p id="management-load-error-message" class="text-red-400 text-center py-4">加载动作失败: ${error.message}</p>`);
+                exerciseListContainer.insertAdjacentHTML('beforeend', `<p id="management-load-error-message" class="text-red-400 text-center py-4">加载动作失败: ${escapeHtml(error.message || '未知错误')}</p>`);
             }
         }
 
