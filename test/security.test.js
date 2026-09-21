@@ -100,4 +100,9 @@ test('liquid glass visual system keeps motion and transparency accessible', () =
   assert.match(html, /prefers-reduced-motion/);
   assert.match(html, /prefers-reduced-transparency/);
   assert.match(html, /muscle-card-meta/);
+  assert.match(html, /--radius-card:\s*24px/);
+  assert.match(html, /--radius-control:\s*12px/);
+  assert.match(html, /blur\(34px\) saturate\(190%\)/);
+  assert.match(html, /muscle-card-index[\s\S]*right:\s*16px/);
+  assert.doesNotMatch(html, /[👤🗑️🚀]/u);
 });

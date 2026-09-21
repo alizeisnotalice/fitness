@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>健身追踪器</title>
     <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#eef3fb">
+    <meta name="theme-color" content="#f2f2f7">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <link rel="icon" type="image/svg+xml" href="/icon.svg">
@@ -190,7 +190,6 @@
             z-index: 1000;
             width: 50px;
             height: 50px;
-            border-radius: 50%;
             border: none;
             cursor: pointer;
             display: flex;
@@ -210,7 +209,6 @@
         
         [data-theme="dark"] .theme-toggle:hover {
             background: rgba(255, 255, 255, 0.25);
-            transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
         }
         
@@ -224,7 +222,6 @@
         
         [data-theme="light"] .theme-toggle:hover {
             background: rgba(255, 255, 255, 0.95);
-            transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
         }
 
@@ -261,7 +258,6 @@
         }
         
         [data-theme="light"] .card:hover {
-            transform: translateY(-3px);
             box-shadow: 
                 0 8px 12px rgba(0, 0, 0, 0.03),
                 0 16px 32px rgba(0, 0, 0, 0.06),
@@ -593,12 +589,10 @@
         
         [data-theme="light"] ::-webkit-scrollbar-track {
             background: rgba(0, 0, 0, 0.05);
-            border-radius: 4px;
         }
         
         [data-theme="light"] ::-webkit-scrollbar-thumb {
             background: rgba(0, 0, 0, 0.15);
-            border-radius: 4px;
         }
         
         [data-theme="light"] ::-webkit-scrollbar-thumb:hover {
@@ -708,7 +702,6 @@
         .card {
             background: linear-gradient(145deg, rgba(30, 41, 59, 0.8), rgba(26, 32, 44, 0.8));
             border: 1px solid rgba(74, 85, 104, 0.3);
-            border-radius: 16px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             padding: 1.5rem;
             backdrop-filter: blur(10px);
@@ -716,7 +709,6 @@
         }
         
         .card:hover {
-            transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
         }
         
@@ -868,7 +860,6 @@
             align-items: center;
             justify-content: center;
             padding: 2rem 1rem;
-            border-radius: 16px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
@@ -887,7 +878,6 @@
             bottom: -2px;
             background: linear-gradient(45deg, var(--primary), var(--accent), var(--secondary));
             z-index: -1;
-            border-radius: 18px;
             opacity: 0;
             transition: opacity 0.3s ease;
         }
@@ -897,7 +887,6 @@
         }
         
         .muscle-card:hover {
-            transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
         }
         
@@ -905,10 +894,6 @@
             font-size: 3.5rem;
             margin-bottom: 1rem;
             transition: transform 0.3s ease;
-        }
-        
-        .muscle-card:hover .muscle-icon {
-            transform: scale(1.1);
         }
         
         .muscle-name {
@@ -923,7 +908,6 @@
             align-items: center;
             justify-content: center;
             padding: 0.8rem 1.5rem;
-            border-radius: 12px;
             font-weight: 600;
             transition: all 0.3s ease;
             border: none;
@@ -941,7 +925,6 @@
         .btn-primary:hover {
             background: linear-gradient(90deg, #2b78ff, #4a8cff);
             box-shadow: 0 6px 20px rgba(58, 134, 255, 0.4);
-            transform: translateY(-2px);
         }
         
         .btn-secondary {
@@ -953,7 +936,6 @@
         .btn-secondary:hover {
             background: linear-gradient(90deg, #7327e6, #8847eb);
             box-shadow: 0 6px 20px rgba(131, 56, 236, 0.4);
-            transform: translateY(-2px);
         }
         
         .btn-action {
@@ -972,7 +954,6 @@
         input, select {
             background: rgba(15, 23, 42, 0.7);
             border: 1px solid rgba(74, 85, 104, 0.4);
-            border-radius: 12px;
             padding: 0.8rem 1.2rem;
             color: #e2e8f0;
             font-size: 1rem;
@@ -1001,7 +982,6 @@
         /* 加载动画 */
         .loader {
             border: 4px solid rgba(74, 85, 104, 0.3);
-            border-radius: 50%;
             border-top: 4px solid var(--primary);
             width: 40px;
             height: 40px;
@@ -1035,7 +1015,6 @@
         
         .modal-content {
             background: var(--card-bg);
-            border-radius: 16px;
             width: 90%;
             max-width: 400px;
             padding: 2rem;
@@ -1067,7 +1046,6 @@
         #manage-muscle-select {
             background: rgba(15, 23, 42, 0.7);
             border: 1px solid rgba(74, 85, 104, 0.4);
-            border-radius: 12px;
             padding: 0.8rem 1.2rem;
             color: #e2e8f0;
             font-size: 1rem;
@@ -1225,7 +1203,6 @@
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(58, 134, 255, 0.3);
-            border-radius: 12px;
             padding: 12px 16px;
             z-index: 1000;
             max-width: 280px;
@@ -1386,7 +1363,6 @@
             color: white;
             background: #24292e;
             border: none;
-            border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
             min-width: 240px;
@@ -1395,7 +1371,6 @@
 
         .login-page .login-btn:hover {
             background: #2f363d;
-            transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
 
@@ -1417,7 +1392,6 @@
             align-items: center;
             gap: 0.5rem;
             padding: 1rem;
-            border-radius: 12px;
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -1449,7 +1423,6 @@
             color: white;
             font-size: 0.7rem;
             padding: 1px 6px;
-            border-radius: 4px;
             font-weight: 600;
             vertical-align: middle;
             margin-right: 4px;
@@ -1457,7 +1430,6 @@
 
         .tooltip-superset {
             background: rgba(245, 158, 11, 0.1);
-            border-radius: 4px;
             padding: 4px 6px !important;
         }
 
@@ -1565,7 +1537,7 @@
 
         body {
             position: relative;
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+            font-family: "PingFang SC", "PingFang TC", -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
             font-weight: 400;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
@@ -1600,7 +1572,6 @@
             height: 19rem;
             pointer-events: none;
             background: rgba(118, 233, 220, 0.11);
-            border-radius: 42% 58% 66% 34% / 52% 38% 62% 48%;
             filter: blur(56px);
             animation: ambientDrift 16s ease-in-out infinite alternate;
             z-index: 0;
@@ -1638,7 +1609,6 @@
             text-align: center;
             background: rgba(255, 255, 255, 0.075);
             border: 1px solid rgba(255, 255, 255, 0.16);
-            border-radius: 2rem;
             box-shadow: 0 18px 44px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
             -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -1707,7 +1677,6 @@
             color: var(--text);
             border-color: rgba(191, 214, 255, 0.62);
             background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-1px);
         }
 
         #sync-icon {
@@ -1733,7 +1702,6 @@
             padding: 1.2rem 1.3rem 1.1rem;
             align-items: flex-start;
             justify-content: flex-end;
-            border-radius: 1.55rem;
             isolation: isolate;
             overflow: hidden;
             transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
@@ -1756,7 +1724,6 @@
             position: absolute;
             inset: 0;
             z-index: -1;
-            border-radius: inherit;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent 36%, rgba(124, 162, 255, 0.11));
             opacity: 0.8;
             transition: opacity 0.3s ease, transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
@@ -1769,14 +1736,12 @@
             right: 1rem;
             width: 0.45rem;
             height: 0.45rem;
-            border-radius: 50%;
             background: #c7d8ff;
             box-shadow: 0 0 0 0 rgba(168, 197, 255, 0.46);
             animation: statusPulse 3.4s ease-out infinite;
         }
 
         .muscle-card:hover {
-            transform: translateY(-6px) scale(1.012);
             border-color: rgba(205, 222, 255, 0.58);
             background: rgba(255, 255, 255, 0.17);
             box-shadow: 0 25px 50px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -1784,7 +1749,6 @@
 
         .muscle-card:hover::before {
             opacity: 1;
-            transform: scale(1.06) rotate(1deg);
         }
 
         .muscle-card:active,
@@ -1807,15 +1771,21 @@
         .muscle-icon {
             align-self: flex-start;
             margin-bottom: auto;
-            font-size: clamp(2.4rem, 5vw, 3.55rem);
-            filter: saturate(0.86) drop-shadow(0 7px 14px rgba(2, 8, 23, 0.16));
+            width: clamp(2.8rem, 6vw, 3.8rem);
+            height: clamp(2.8rem, 6vw, 3.8rem);
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            color: var(--primary);
+            filter: drop-shadow(0 7px 14px rgba(2, 8, 23, 0.16));
             transform-origin: 30% 70%;
             transition: filter 0.3s ease, transform 0.42s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .muscle-card:hover .muscle-icon {
-            filter: saturate(1.08) drop-shadow(0 10px 17px rgba(2, 8, 23, 0.22));
-            transform: translateY(-4px) rotate(-4deg) scale(1.06);
+            filter: drop-shadow(0 10px 17px rgba(2, 8, 23, 0.22));
         }
 
         .muscle-name {
@@ -1834,12 +1804,10 @@
         }
 
         .card {
-            border-radius: 1.5rem;
             transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.28s ease, box-shadow 0.28s ease;
         }
 
         .card:hover {
-            transform: translateY(-3px);
             border-color: rgba(205, 222, 255, 0.4);
             box-shadow: 0 24px 48px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
         }
@@ -1874,7 +1842,6 @@
 
         .page-header {
             border: 1px solid var(--line);
-            border-radius: 1.35rem;
             background: rgba(255, 255, 255, 0.11) !important;
             box-shadow: 0 14px 30px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.22);
             backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
@@ -1889,7 +1856,6 @@
 
         .btn {
             min-height: 2.75rem;
-            border-radius: 1rem;
             padding: 0.7rem 1.1rem;
             font-weight: 700;
             letter-spacing: 0.01em;
@@ -1910,7 +1876,6 @@
             background: linear-gradient(180deg, rgba(116, 166, 255, 0.98), rgba(52, 119, 232, 0.98));
             border-color: rgba(235, 242, 255, 0.58);
             box-shadow: 0 14px 28px rgba(31, 87, 191, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.38);
-            transform: translateY(-2px);
         }
 
         .btn-action {
@@ -1934,7 +1899,6 @@
             color: var(--text);
             background: rgba(6, 9, 18, 0.2);
             border-color: var(--line);
-            border-radius: 0.95rem;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(18px) saturate(130%);
             -webkit-backdrop-filter: blur(18px) saturate(130%);
@@ -1964,7 +1928,6 @@
             color: var(--text) !important;
             border-color: rgba(205, 222, 255, 0.62);
             background: rgba(255, 255, 255, 0.24) !important;
-            transform: scale(1.07) rotate(8deg);
         }
 
         .login-page {
@@ -1972,6 +1935,9 @@
         }
 
         .login-page .login-logo {
+            width: 5.25rem;
+            height: 5.25rem;
+            display: block;
             filter: drop-shadow(0 12px 24px rgba(91, 147, 255, 0.24));
             animation: loginFloat 3.8s ease-in-out infinite;
         }
@@ -1993,7 +1959,6 @@
             color: #fff;
             background: rgba(23, 31, 50, 0.68);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 1rem;
             box-shadow: 0 15px 32px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(22px) saturate(150%);
             -webkit-backdrop-filter: blur(22px) saturate(150%);
@@ -2012,7 +1977,6 @@
             color: var(--muted);
             background: rgba(255, 255, 255, 0.07);
             border: 1px solid var(--line);
-            border-radius: 1rem;
             font-size: 0.88rem;
             cursor: pointer;
             transition: transform 0.24s ease, background 0.24s ease, border-color 0.24s ease, color 0.24s ease;
@@ -2024,13 +1988,11 @@
             color: var(--text);
             background: rgba(255, 255, 255, 0.15);
             border-color: rgba(205, 222, 255, 0.5);
-            transform: translateY(-1px);
         }
 
         .login-page .login-feature {
             background: rgba(255, 255, 255, 0.1);
             border: 1px solid var(--line);
-            border-radius: 1rem;
             box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(18px) saturate(140%);
             -webkit-backdrop-filter: blur(18px) saturate(140%);
@@ -2038,6 +2000,16 @@
 
         .login-page .login-feature .feature-text {
             color: var(--muted);
+        }
+
+        .login-page .login-feature .feature-icon {
+            width: 1.5rem;
+            height: 1.5rem;
+            fill: none;
+            stroke: var(--primary);
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
         }
 
         .workout-info-box,
@@ -2066,7 +2038,6 @@
 
         .modal-content {
             border: 1px solid var(--line);
-            border-radius: 1.75rem;
             background: rgba(26, 35, 57, 0.74);
             box-shadow: 0 24px 70px rgba(2, 8, 23, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.25);
             backdrop-filter: blur(30px) saturate(160%);
@@ -2083,12 +2054,7 @@
         }
 
         #sw-update-banner button {
-            border-radius: 0.8rem !important;
             transition: transform 0.2s ease, background 0.2s ease;
-        }
-
-        #sw-update-banner button:hover {
-            transform: translateY(-1px);
         }
 
         @keyframes sheetUp {
@@ -2236,14 +2202,14 @@
 
         @media (max-width: 640px) {
             .app-container { padding-top: 0.5rem; }
-            .app-header { padding-top: 1.2rem; border-radius: 1.45rem; }
+            .app-header { padding-top: 1.2rem; }
             .app-header::before { font-size: 0.58rem; letter-spacing: 0.17em; }
-            .muscle-card { height: 164px; padding: 1rem; border-radius: 1.25rem; }
+            .muscle-card { height: 164px; padding: 1rem; }
             .muscle-icon { font-size: 2.5rem; }
             .muscle-name { font-size: 1rem; }
             .muscle-card-meta { font-size: 0.53rem; }
-            .card { padding: 1.1rem; border-radius: 1.25rem; }
-            .page-header { margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem; border-radius: 0 0 1.25rem 1.25rem; }
+            .card { padding: 1.1rem; }
+            .page-header { margin-left: -1rem; margin-right: -1rem; padding-left: 1rem; padding-right: 1rem; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -2254,10 +2220,409 @@
                 animation: none;
             }
             .muscle-card::after { animation: none; }
-            .muscle-card:hover .muscle-icon { transform: none; }
             .btn:active,
             .btn-action:active,
             .muscle-card:active { transform: none; }
+        }
+        /* One geometry scale for every page and dynamically rendered component.
+           These are app tokens, not fixed radii prescribed by Apple. */
+        :root {
+            color-scheme: dark;
+            --radius-control: 12px;
+            --radius-group: 16px;
+            --radius-card: 24px;
+            --radius-sheet: 28px;
+            --radius-pill: 9999px;
+            --primary: #0a84ff;
+            --primary-strong: #409cff;
+            --secondary: #5e5ce6;
+            --accent: #8e8e93;
+            --dark: #000;
+            --darker: #000;
+            --card-bg: rgba(28, 28, 30, 0.62);
+            --surface: rgba(44, 44, 46, 0.64);
+            --surface-soft: rgba(120, 120, 128, 0.18);
+            --system-fill: rgba(120, 120, 128, 0.24);
+            --line: rgba(84, 84, 88, 0.65);
+            --muted: rgba(235, 235, 245, 0.6);
+            --text: #f2f2f7;
+            --shadow: rgba(0, 0, 0, 0.22);
+        }
+
+        [data-theme="light"] {
+            color-scheme: light;
+            --primary: #007aff;
+            --primary-strong: #0066cc;
+            --secondary: #5856d6;
+            --accent: #8e8e93;
+            --dark: #f2f2f7;
+            --darker: #f2f2f7;
+            --card-bg: rgba(255, 255, 255, 0.62);
+            --surface: rgba(255, 255, 255, 0.7);
+            --surface-soft: rgba(118, 118, 128, 0.08);
+            --system-fill: rgba(118, 118, 128, 0.12);
+            --line: rgba(60, 60, 67, 0.18);
+            --muted: rgba(60, 60, 67, 0.65);
+            --text: #1c1c1e;
+            --shadow: rgba(60, 60, 67, 0.08);
+        }
+
+        body {
+            background:
+                radial-gradient(circle at 10% -8%, rgba(250, 17, 79, 0.16), transparent 28rem),
+                radial-gradient(circle at 96% 18%, rgba(0, 255, 246, 0.1), transparent 26rem),
+                radial-gradient(circle at 48% 108%, rgba(166, 255, 0, 0.06), transparent 30rem),
+                var(--darker) !important;
+        }
+
+        [data-theme="light"] body {
+            background:
+                radial-gradient(circle at 10% -8%, rgba(250, 17, 79, 0.09), transparent 28rem),
+                radial-gradient(circle at 96% 18%, rgba(0, 122, 255, 0.08), transparent 26rem),
+                radial-gradient(circle at 48% 108%, rgba(48, 209, 88, 0.06), transparent 30rem),
+                var(--darker) !important;
+        }
+
+        body::before {
+            content: '';
+            opacity: 0.12;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 48px 48px;
+            mask-image: linear-gradient(to bottom, black, transparent 78%);
+        }
+
+        [data-theme="light"] body::before {
+            opacity: 0.1;
+            background-image: linear-gradient(rgba(60, 60, 67, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(60, 60, 67, 0.05) 1px, transparent 1px);
+        }
+
+        body::after {
+            content: '';
+            top: 8rem;
+            left: -8rem;
+            width: 24rem;
+            height: 24rem;
+            background: rgba(10, 132, 255, 0.1);
+            filter: blur(78px);
+            opacity: 0.8;
+            animation: none;
+        }
+
+        button, input, select, textarea {
+            font-family: inherit;
+            border-radius: var(--radius-control);
+        }
+
+        .app-header, .page-header, .card, .muscle-card {
+            border-radius: var(--radius-card);
+        }
+
+        .exercise-block, .history-item, .history-session, .exercise-item,
+        .common-exercise-item, .workout-info-box, .workout-plan-item,
+        .workout-stats-box, .last-workout-tooltip, .login-page .login-feature {
+            border-radius: var(--radius-group);
+        }
+
+        .modal-content { border-radius: var(--radius-sheet); padding: 16px; }
+        .page-header { padding: 12px; margin-left: 0; margin-right: 0; }
+        .plan-badge, #sync-button { border-radius: var(--radius-pill); }
+        .theme-toggle, .user-avatar, .loader, .muscle-card::after { border-radius: 50%; }
+        .muscle-card::before { border-radius: inherit; }
+        ::-webkit-scrollbar-track, ::-webkit-scrollbar-thumb { border-radius: var(--radius-pill); }
+
+        /* Continuous curves where supported; circular-arc corners are the fallback.
+           Do not clip the whole card: keyboard focus and glass shadows stay visible. */
+        @supports (corner-shape: squircle) {
+            button, input, select, textarea,
+            .app-header, .page-header, .card, .muscle-card, .modal-content,
+            .exercise-block, .history-item, .history-session, .exercise-item,
+            .common-exercise-item, .workout-info-box, .workout-plan-item,
+            .workout-stats-box, .last-workout-tooltip, .login-page .login-feature {
+                corner-shape: squircle;
+            }
+            .muscle-card::before { corner-shape: inherit; }
+            .theme-toggle, #sync-button, .plan-badge { corner-shape: round; }
+        }
+
+        :is([data-theme="dark"], [data-theme="light"]) :is(.app-header, .page-header, .card, .muscle-card, .modal-content, .last-workout-tooltip, #sw-update-banner) {
+            background: var(--card-bg) !important;
+            border-color: var(--line) !important;
+            box-shadow: 0 8px 24px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(32px) saturate(180%) !important;
+            -webkit-backdrop-filter: blur(32px) saturate(180%) !important;
+        }
+
+        .muscle-card::before {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), transparent 52%);
+            opacity: 0.85;
+        }
+
+        .muscle-card::after { content: none; }
+        .app-title, .login-page .login-title { text-shadow: none; }
+
+        .muscle-card-index {
+            top: 16px;
+            right: 16px;
+            left: auto;
+            z-index: 2;
+            padding: 4px 8px;
+            color: var(--muted);
+            background: var(--surface-soft);
+            border: 1px solid var(--line);
+            border-radius: var(--radius-pill);
+            font-size: 10px;
+            letter-spacing: 0.08em;
+        }
+
+        .muscle-icon {
+            position: relative;
+            z-index: 1;
+            margin-top: 28px;
+            margin-bottom: auto;
+            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.18));
+        }
+
+        .muscle-card:nth-child(1) .muscle-icon { color: #fa114f; }
+        .muscle-card:nth-child(2) .muscle-icon { color: #00a8ff; }
+        .muscle-card:nth-child(3) .muscle-icon { color: #a6ff00; }
+        .muscle-card:nth-child(4) .muscle-icon { color: #00fff6; }
+        .muscle-card:nth-child(5) .muscle-icon { color: #ff9f0a; }
+        .muscle-card:nth-child(6) .muscle-icon { color: #bf5af2; }
+
+        :is([data-theme="dark"], [data-theme="light"]) :is(.exercise-block, .history-session, .exercise-item, .common-exercise-item, .workout-info-box, .workout-plan-item, .workout-stats-box, .login-feature) {
+            background: var(--surface-soft) !important;
+            border-color: var(--line) !important;
+            box-shadow: none;
+        }
+
+        :is([data-theme="dark"], [data-theme="light"]) :is(input, select, textarea, #manage-muscle-select, #new-exercise-input, #new-common-exercise-input, #target-weight, #input-modal-field) {
+            background-color: var(--system-fill) !important;
+            border: 1px solid var(--line) !important;
+            color: var(--text) !important;
+            box-shadow: none !important;
+        }
+
+        :is([data-theme="dark"], [data-theme="light"]) :is(input, select, textarea):focus-visible,
+        button:focus-visible, .muscle-card:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        input::placeholder, textarea::placeholder { color: var(--muted); }
+
+        .btn-primary, .btn-secondary {
+            color: #fff;
+            background: var(--primary) !important;
+            border-color: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .btn-primary:hover { background: var(--primary-strong) !important; }
+
+        .btn-secondary {
+            color: var(--text) !important;
+            background: var(--system-fill) !important;
+            border-color: var(--line) !important;
+        }
+
+        .btn-secondary:hover { background: var(--surface) !important; }
+
+        #save-session-button {
+            color: #fff !important;
+            background: #30d158 !important;
+            border-color: transparent !important;
+        }
+
+        #save-session-button:hover { background: #34c759 !important; }
+
+        :is([data-theme="dark"], [data-theme="light"]) :is(.btn-action, .add-set-btn, .offline-login-button, .login-btn, #user-area button, #sync-button, .theme-toggle, #input-modal-cancel) {
+            color: var(--text);
+            background: var(--system-fill) !important;
+            border-color: var(--line);
+            box-shadow: none !important;
+        }
+
+        #sync-button, .muscle-card-index, .muscle-card-meta, .app-header::before {
+            font-family: inherit;
+        }
+
+        .muscle-card:hover, .card:hover, .muscle-card:hover::before,
+        .muscle-card:hover .muscle-icon, button:hover { transform: none; }
+
+        .muscle-card:active, button:active { transform: scale(0.975); }
+        .card { transition: border-color 0.2s ease; }
+
+        .icon-button { width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center; }
+        .icon-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+
+        #sw-update-banner {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            max-width: 640px;
+            margin: auto;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 12px;
+            border: 1px solid var(--line);
+            border-radius: var(--radius-card);
+            color: var(--text);
+            font-size: 14px;
+        }
+
+        #sw-update-banner .btn { font-size: 13px; padding: 8px 12px; }
+
+        @media (prefers-reduced-transparency: reduce) {
+            :root { --card-bg: #1c1c1e; --surface: #2c2c2e; --surface-soft: #2c2c2e; --system-fill: #3a3a3c; }
+            [data-theme="light"] { --card-bg: #fff; --surface: #fff; --surface-soft: #f2f2f7; --system-fill: #e5e5ea; }
+        }
+
+        @media (prefers-contrast: more) {
+            :root { --line: #8e8e93; --muted: #c7c7cc; }
+            [data-theme="light"] { --line: #636366; --muted: #48484a; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .page, .page.active, .muscle-card, .modal-content,
+            .login-page .login-logo { animation: none; }
+            .muscle-card:active, button:active { transform: none; }
+        }
+
+        /* Apple Fitness style material polish: layered glass, restrained tints,
+           and spring-like feedback without changing layout geometry. */
+        :root {
+            --glass-edge: rgba(255, 255, 255, 0.2);
+            --glass-highlight: rgba(255, 255, 255, 0.14);
+            --glass-shadow: rgba(0, 0, 0, 0.28);
+        }
+
+        [data-theme="light"] {
+            --glass-edge: rgba(60, 60, 67, 0.14);
+            --glass-highlight: rgba(255, 255, 255, 0.72);
+            --glass-shadow: rgba(60, 60, 67, 0.12);
+        }
+
+        body::after {
+            animation: ambientFloat 18s ease-in-out infinite alternate;
+            will-change: transform;
+        }
+
+        @keyframes ambientFloat {
+            from { transform: translate3d(-1rem, -0.5rem, 0) scale(0.95); }
+            to { transform: translate3d(5rem, 2rem, 0) scale(1.08); }
+        }
+
+        :is(.app-header, .page-header, .card, .muscle-card, .modal-content, .last-workout-tooltip) {
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--glass-edge) !important;
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.09), transparent 42%),
+                var(--card-bg) !important;
+            box-shadow:
+                0 18px 42px var(--glass-shadow),
+                inset 0 1px 0 var(--glass-highlight),
+                inset 0 -1px 0 rgba(0, 0, 0, 0.08) !important;
+            backdrop-filter: blur(34px) saturate(190%) !important;
+            -webkit-backdrop-filter: blur(34px) saturate(190%) !important;
+        }
+
+        :is(.exercise-block, .history-session, .exercise-item, .common-exercise-item, .workout-info-box, .workout-plan-item, .workout-stats-box) {
+            border: 1px solid var(--glass-edge) !important;
+            background:
+                linear-gradient(145deg, rgba(255, 255, 255, 0.08), transparent 58%),
+                var(--surface-soft) !important;
+            box-shadow: inset 0 1px 0 var(--glass-highlight), 0 8px 18px rgba(0, 0, 0, 0.12) !important;
+            backdrop-filter: blur(24px) saturate(170%);
+            -webkit-backdrop-filter: blur(24px) saturate(170%);
+        }
+
+        .muscle-card {
+            isolation: isolate;
+            transition: transform 0.52s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.38s ease, border-color 0.38s ease, filter 0.38s ease;
+        }
+
+        .muscle-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            border-radius: inherit;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), transparent 42%, rgba(255, 255, 255, 0.02));
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .muscle-card:hover {
+            border-color: rgba(255, 255, 255, 0.34) !important;
+            filter: brightness(1.06);
+            box-shadow: 0 24px 54px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+        }
+
+        .muscle-card:nth-child(1) { animation-delay: 0.04s; }
+        .muscle-card:nth-child(2) { animation-delay: 0.09s; }
+        .muscle-card:nth-child(3) { animation-delay: 0.14s; }
+        .muscle-card:nth-child(4) { animation-delay: 0.19s; }
+        .muscle-card:nth-child(5) { animation-delay: 0.24s; }
+        .muscle-card:nth-child(6) { animation-delay: 0.29s; }
+
+        .btn {
+            position: relative;
+            overflow: hidden;
+            isolation: isolate;
+            border: 1px solid var(--glass-edge) !important;
+            transition: transform 0.42s cubic-bezier(0.22, 1, 0.36, 1), background 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease, color 0.32s ease;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            inset: 1px;
+            z-index: -1;
+            border-radius: inherit;
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.16), transparent 60%);
+            opacity: 0.75;
+            pointer-events: none;
+        }
+
+        .btn-primary, .btn-secondary, #save-session-button {
+            color: var(--text) !important;
+            background: var(--surface-soft) !important;
+            border-color: var(--glass-edge) !important;
+            box-shadow: 0 10px 24px var(--glass-shadow), inset 0 1px 0 var(--glass-highlight) !important;
+        }
+
+        .btn-primary { color: #409cff !important; }
+        .btn-secondary { color: var(--text) !important; }
+        #save-session-button { color: #30d158 !important; }
+
+        .btn-primary:hover, .btn-secondary:hover, #save-session-button:hover {
+            background: var(--surface) !important;
+            border-color: rgba(255, 255, 255, 0.3) !important;
+            box-shadow: 0 14px 30px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+            filter: brightness(1.06);
+        }
+
+        .btn:active {
+            transform: translateY(1px) scale(0.965) !important;
+            transition-duration: 0.12s;
+        }
+
+        .add-set-btn, .exercise-delete-btn, .icon-button {
+            transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1), background 0.28s ease, color 0.28s ease;
+        }
+
+        .add-set-btn:hover, .exercise-delete-btn:hover, .icon-button:hover { filter: brightness(1.12); }
+
+        @media (prefers-reduced-motion: reduce) {
+            body::after { animation: none; }
+            .muscle-card { animation: none; transition: none; }
+            .btn { transition: none; }
         }
     </style>
 </head>
@@ -2274,7 +2639,11 @@
         <!-- 登录页面 -->
         <div id="login-page" class="page">
             <div class="login-page">
-                <div class="login-logo">🏋️</div>
+                <svg class="login-logo" viewBox="0 0 84 84" role="img" aria-label="健身追踪器">
+                    <circle cx="42" cy="42" r="28" fill="none" stroke="#ff375f" stroke-width="8" stroke-linecap="round" stroke-dasharray="62 114" transform="rotate(-90 42 42)" />
+                    <circle cx="42" cy="42" r="28" fill="none" stroke="#30d158" stroke-width="8" stroke-linecap="round" stroke-dasharray="62 114" stroke-dashoffset="-62" transform="rotate(-90 42 42)" />
+                    <circle cx="42" cy="42" r="28" fill="none" stroke="#0a84ff" stroke-width="8" stroke-linecap="round" stroke-dasharray="62 114" stroke-dashoffset="-124" transform="rotate(-90 42 42)" />
+                </svg>
                 <h1 class="login-title">健身追踪器</h1>
                 <p class="login-subtitle">记录你的每一次训练，见证身体的变化</p>
                 <button class="login-btn" onclick="loginWithGithub()">
@@ -2286,15 +2655,15 @@
                 </button>
                 <div class="login-features">
                     <div class="login-feature">
-                        <span class="feature-icon">📊</span>
+                        <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V9M10 19V5M16 19v-7M22 19V3" /></svg>
                         <span class="feature-text">训练记录</span>
                     </div>
                     <div class="login-feature">
-                        <span class="feature-icon">📈</span>
+                        <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m4 16 5-5 3 3 7-8M15 6h4v4" /></svg>
                         <span class="feature-text">进度追踪</span>
                     </div>
                     <div class="login-feature">
-                        <span class="feature-icon">🎯</span>
+                        <svg class="feature-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><circle cx="12" cy="12" r="3" /><path d="M12 2v2M22 12h-2M12 22v-2M2 12h2" /></svg>
                         <span class="feature-text">训练计划</span>
                     </div>
                 </div>
@@ -2315,7 +2684,7 @@
                 <!-- 手动同步按钮 + 状态显示 -->
                 <div class="flex justify-center mt-3">
                     <button id="sync-button" onclick="manualSync()"
-                            class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-gray-700/60 hover:bg-gray-600/60 border border-gray-600/50 text-sm text-gray-300 transition-colors">
+                            class="flex items-center gap-2 px-4 py-1.5 bg-gray-700/60 hover:bg-gray-600/60 border border-gray-600/50 text-sm text-gray-300 transition-colors">
                         <i class="fas fa-sync-alt text-xs" id="sync-icon"></i>
                         <span id="sync-status-text">点击同步</span>
                     </button>
@@ -2325,42 +2694,54 @@
             <div class="grid-container">
                 <div class="muscle-card" onclick="showTrainingPage('chest', '胸部训练')">
                     <span class="muscle-card-index">01</span>
-                    <div class="muscle-icon">💪</div>
+                    <svg class="muscle-icon" viewBox="0 0 64 64" role="img" aria-label="胸部力量训练">
+                        <path d="M18 24v16M11 28v8M5 30v4M46 24v16M53 28v8M59 30v4M18 32h28" />
+                    </svg>
                     <div class="muscle-name">胸 & 三头</div>
                     <span class="muscle-card-meta">PUSH / POWER</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showTrainingPage('back', '背部训练')">
                     <span class="muscle-card-index">02</span>
-                    <div class="muscle-icon">🚀</div>
+                    <svg class="muscle-icon" viewBox="0 0 64 64" role="img" aria-label="背部控制训练">
+                        <path d="M18 12h28M24 12v7c0 7 3 10 8 10s8-3 8-10v-7M24 29l-9 17M40 29l9 17M20 39h24M32 29v21" />
+                    </svg>
                     <div class="muscle-name">背 & 二头</div>
                     <span class="muscle-card-meta">PULL / CONTROL</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showTrainingPage('shoulders', '肩部训练')">
                     <span class="muscle-card-index">03</span>
-                    <div class="muscle-icon">🏋️</div>
+                    <svg class="muscle-icon" viewBox="0 0 64 64" role="img" aria-label="肩部推举训练">
+                        <path d="M24 23a8 8 0 1 1 16 0v4a8 8 0 0 1-16 0v-4ZM19 54V39a8 8 0 0 1 8-8h10a8 8 0 0 1 8 8v15M14 17h36M19 11v12M45 11v12" />
+                    </svg>
                     <div class="muscle-name">肩部训练</div>
                     <span class="muscle-card-meta">PRESS / FORM</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showTrainingPage('legs', '腿部训练')">
                     <span class="muscle-card-index">04</span>
-                    <div class="muscle-icon">🦵</div>
+                    <svg class="muscle-icon" viewBox="0 0 64 64" role="img" aria-label="腿部驱动训练">
+                        <path d="M25 10c2 7 5 14 8 19l-8 9-8 16M39 10c-2 7-5 14-8 19l8 9 8 16M22 10h20M17 54h12M35 54h12" />
+                    </svg>
                     <div class="muscle-name">腿部训练</div>
                     <span class="muscle-card-meta">LOWER / DRIVE</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showExerciseManagementPage()">
                     <span class="muscle-card-index">05</span>
-                    <div class="muscle-icon">⚙️</div>
+                    <svg class="muscle-icon" viewBox="0 0 64 64" role="img" aria-label="动作库管理">
+                        <path d="M32 8v48M8 20h48M8 44h48M17 8v24M47 32v24M32 20a4 4 0 1 0 0 .01M32 44a4 4 0 1 0 0 .01M17 32a4 4 0 1 0 0 .01M47 20a4 4 0 1 0 0 .01" />
+                    </svg>
                     <div class="muscle-name">动作管理</div>
                     <span class="muscle-card-meta">LIBRARY / EDIT</span>
                 </div>
                 
                 <div class="muscle-card" onclick="showWorkoutPlannerPage()">
                     <span class="muscle-card-index">06</span>
-                    <div class="muscle-icon">📊</div>
+                    <svg class="muscle-icon" viewBox="0 0 64 64" role="img" aria-label="训练计划进度">
+                        <path d="M10 54V32M26 54V19M42 54V27M58 54V10M7 54h54" />
+                    </svg>
                     <div class="muscle-name">训练计划</div>
                     <span class="muscle-card-meta">PLAN / PROGRESS</span>
                 </div>
@@ -2432,7 +2813,7 @@
             </div>
             
             <select id="manage-muscle-select" onchange="loadExercisesForManagement(this.value)" 
-                    class="w-full mb-4 bg-gray-800 border border-gray-600 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
+                    class="w-full mb-4 bg-gray-800 border border-gray-600 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
                 <option value="">-- 请选择肌肉群 --</option>
                 <option value="chest">胸 & 三头</option>
                 <option value="back">背 & 二头</option>
@@ -2444,7 +2825,7 @@
                 <h3 class="text-lg font-semibold mb-3 text-gray-300 text-center">添加动作</h3>
                 <div class="flex flex-col sm:flex-row gap-3">
                     <input type="text" id="new-exercise-input" placeholder="动作名称" 
-                           class="flex-1 bg-gray-800 border border-gray-600 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
+                           class="flex-1 bg-gray-800 border border-gray-600 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
                     <button onclick="addNewExercise()" class="btn btn-primary sm:w-auto w-full">
                         <i class="fas fa-plus mr-1"></i> 添加
                     </button>
@@ -2478,7 +2859,7 @@
         <p id="common-admin-readonly-message" class="hidden text-gray-400 text-sm mb-4">公用动作由管理员维护，当前账号只读。</p>
         <div id="common-admin-controls" class="flex flex-col sm:flex-row gap-3 mb-4">
             <input type="text" id="new-common-exercise-input" placeholder="新公用动作名称" 
-                   class="flex-1 bg-gray-800 border border-gray-600 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
+                   class="flex-1 bg-gray-800 border border-gray-600 p-3 focus:outline-none focus:ring-2 focus:ring-blue-400 text-white">
             <button onclick="addCommonExercise()" class="btn btn-secondary sm:w-auto w-full">
                 <i class="fas fa-plus mr-1"></i> 添加公用动作
             </button>
@@ -2512,11 +2893,11 @@
                         <div>
                             <label class="workout-label block text-gray-300 mb-2">目标重量 (kg)</label>
                             <input type="number" id="target-weight" placeholder="例如: 100" 
-                                   class="w-full bg-gray-800 border border-gray-600 rounded-xl p-3 text-white text-lg"
+                                   class="w-full bg-gray-800 border border-gray-600 p-3 text-white text-lg"
                                    oninput="calculateWorkoutPlan()">
                         </div>
                         
-                        <div class="workout-info-box bg-gray-800/50 p-4 rounded-lg border border-gray-600">
+                        <div class="workout-info-box bg-gray-800/50 p-4 border border-gray-600">
                             <h3 class="text-blue-300 font-semibold mb-2"><i class="fas fa-info-circle mr-2"></i>计算说明</h3>
                             <p class="text-gray-400 text-sm">
                                 根据你的目标重量，系统会生成渐进式训练计划，从70%开始逐步提升到目标重量。
@@ -2555,9 +2936,9 @@
     <div id="input-modal" class="modal-backdrop hidden">
         <div class="modal-content">
             <h3 id="input-modal-title" class="text-xl font-bold mb-3 text-white"></h3>
-            <input type="text" id="input-modal-field" inputmode="decimal" class="w-full bg-gray-900 rounded p-3 text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4" onfocus="if(this.value) this.dataset.prevValue=this.value; this.value='';" onblur="if(!this.value && this.dataset.prevValue) this.value=this.dataset.prevValue;">
+            <input type="text" id="input-modal-field" inputmode="decimal" class="w-full bg-gray-900 p-3 text-center text-lg focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4" onfocus="if(this.value) this.dataset.prevValue=this.value; this.value='';" onblur="if(!this.value && this.dataset.prevValue) this.value=this.dataset.prevValue;">
             <div class="flex gap-3">
-                <button id="input-modal-cancel" class="btn flex-1 bg-gray-600 hover:bg-gray-500 rounded-lg py-2 text-white">取消</button>
+                <button id="input-modal-cancel" class="btn flex-1 bg-gray-600 hover:bg-gray-500 py-2 text-white">取消</button>
                 <button id="input-modal-confirm" class="btn flex-1 btn-primary">确定</button>
             </div>
         </div>
@@ -2987,12 +3368,12 @@
                     const avatar = document.createElement('img');
                     avatar.src = avatarUrl;
                     avatar.alt = '用户头像';
-                    avatar.className = 'w-7 h-7 rounded-full border border-gray-500';
+                    avatar.className = 'user-avatar w-7 h-7 border border-gray-500';
                     userArea.appendChild(avatar);
                 } else {
                     const avatar = document.createElement('div');
-                    avatar.className = 'w-7 h-7 rounded-full border border-gray-500 bg-gray-600 flex items-center justify-center text-xs';
-                    avatar.textContent = '👤';
+                    avatar.className = 'user-avatar w-7 h-7 border border-gray-500 bg-gray-600 flex items-center justify-center text-xs';
+                    avatar.textContent = 'U';
                     userArea.appendChild(avatar);
                 }
 
@@ -3003,7 +3384,7 @@
 
                 const action = document.createElement('button');
                 action.className = currentUser.offline
-                    ? 'text-xs text-blue-400 hover:text-blue-300 transition-colors px-2 py-1 rounded border border-blue-500/40'
+                    ? 'text-xs text-blue-400 hover:text-blue-300 transition-colors px-2 py-1 border border-blue-500/40'
                     : 'text-xs text-gray-400 hover:text-red-400 transition-colors';
                 action.title = currentUser.offline ? '登录后可云同步' : '登出';
                 action.setAttribute('aria-label', action.title);
@@ -3019,7 +3400,7 @@
                 userArea.appendChild(action);
             } else {
                 const loginButton = document.createElement('button');
-                loginButton.className = 'flex items-center gap-1.5 text-sm text-gray-300 hover:text-white bg-gray-700/60 hover:bg-gray-600/60 px-3 py-1.5 rounded-lg transition-colors';
+                loginButton.className = 'flex items-center gap-1.5 text-sm text-gray-300 hover:text-white bg-gray-700/60 hover:bg-gray-600/60 px-3 py-1.5 transition-colors';
                 loginButton.setAttribute('aria-label', '使用 GitHub 登录');
                 loginButton.addEventListener('click', loginWithGithub);
                 const icon = document.createElement('i');
@@ -3398,10 +3779,10 @@
             currentPlan.forEach((stage, index) => {
                 const isLast = index === currentPlan.length - 1;
                 const isTargetWeek = stage.isTarget || index === currentPlan.length - 1;
-                const deloadBadge = stage.deload ? '<span class="ml-2 px-2 py-1 bg-yellow-600 text-yellow-100 text-xs rounded">减载</span>' : '';
-                const targetBadge = isTargetWeek ? '<span class="ml-2 px-2 py-1 bg-green-600 text-green-100 text-xs rounded">目标</span>' : '';
+                const deloadBadge = stage.deload ? '<span class="ml-2 px-2 py-1 bg-yellow-600 text-yellow-100 text-xs plan-badge">减载</span>' : '';
+                const targetBadge = isTargetWeek ? '<span class="ml-2 px-2 py-1 bg-green-600 text-green-100 text-xs plan-badge">目标</span>' : '';
                 
-                const itemClass = `workout-plan-item bg-gray-800 p-4 rounded-lg border ${isTargetWeek ? 'target-week border-green-500 bg-green-900/20' : 'border-gray-600'} ${stage.deload ? 'deload-week border-yellow-600/50' : ''}`;
+                const itemClass = `workout-plan-item bg-gray-800 p-4 border ${isTargetWeek ? 'target-week border-green-500 bg-green-900/20' : 'border-gray-600'} ${stage.deload ? 'deload-week border-yellow-600/50' : ''}`;
                 
                 html += `
                     <div class="${itemClass}">
@@ -3432,7 +3813,7 @@
             const totalReps = currentPlan.reduce((sum, s) => sum + s.sets * s.reps, 0);
             
             html += `
-                <div class="workout-stats-box mt-4 p-4 bg-blue-900/30 border border-blue-600/50 rounded-lg">
+                <div class="workout-stats-box mt-4 p-4 bg-blue-900/30 border border-blue-600/50">
                     <div class="flex justify-between items-center">
                         <span class="stats-title text-blue-300"><i class="fas fa-chart-bar mr-2"></i>计划统计</span>
                     </div>
@@ -3524,7 +3905,7 @@
             const fragment = document.createDocumentFragment();
             commonExercises.forEach(exercise => {
                 const row = document.createElement('div');
-                row.className = 'common-exercise-item flex items-center justify-between p-3 rounded-xl bg-gray-700/50 hover:bg-gray-700 transition-colors';
+                row.className = 'common-exercise-item flex items-center justify-between p-3 bg-gray-700/50 hover:bg-gray-700 transition-colors';
                 const label = document.createElement('span');
                 label.className = 'text-white font-medium';
                 const icon = document.createElement('i');
@@ -3707,17 +4088,17 @@
                             const exerciseId = `ex-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`; 
                             const exerciseDiv = document.createElement('div');
                             exerciseDiv.id = exerciseId;
-                            exerciseDiv.className = 'exercise-block bg-gray-800 p-3 rounded-lg border border-gray-600';
+                            exerciseDiv.className = 'exercise-block bg-gray-800 p-3 border border-gray-600';
                             exerciseDiv.innerHTML = `
                                 <div class="flex items-center gap-2">
-                                    <select class="exercise-select w-full bg-gray-900 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="handleExerciseSelectChange(this); saveSessionToLocalStorage();"></select>
+                                    <select class="exercise-select w-full bg-gray-900 p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="handleExerciseSelectChange(this); saveSessionToLocalStorage();"></select>
                                     <button onclick="const select=this.previousElementSibling; if(select.value && select.value !== 'add_new') fetchAndShowLastWorkout(select);" class="text-blue-400 hover:text-blue-300 p-1" title="查看上次训练"><i class="fas fa-history"></i></button>
                                     <button onclick="removeExerciseBlock(this)" class="text-red-500 hover:text-red-400 p-1 text-2xl font-bold">×</button>
                                 </div>
                                 <div class="sets-container mt-3 space-y-2"></div>
                                 <div class="flex gap-2 mt-2">
-                                    <button onclick="addSetToExercise('${exerciseId}'); saveSessionToLocalStorage();" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 rounded p-2">+ 添加一组</button>
-                                    <button onclick="addMultipleSetsToExercise('${exerciseId}', 3);" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 rounded p-2">+ 添加3组</button>
+                                    <button onclick="addSetToExercise('${exerciseId}'); saveSessionToLocalStorage();" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 p-2">+ 添加一组</button>
+                                    <button onclick="addMultipleSetsToExercise('${exerciseId}', 3);" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 p-2">+ 添加3组</button>
                                 </div>
                             `;
                             document.getElementById('current-session-container').appendChild(exerciseDiv);
@@ -3747,9 +4128,9 @@
                                 setDiv.className = 'set-item flex items-center gap-2';
                                 setDiv.innerHTML = `
                                     <span class="text-gray-400 w-12 text-sm">第${i + 1}组</span>
-                                    <input type="text" placeholder="重量(kg)" value="${escapeHtml(set.weight)}" class="set-weight w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
+                                    <input type="text" placeholder="重量(kg)" value="${escapeHtml(set.weight)}" class="set-weight w-full bg-gray-900 p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
                                     <span class="text-gray-500">x</span>
-                                    <input type="text" placeholder="次数" value="${escapeHtml(set.reps)}" class="set-reps w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
+                                    <input type="text" placeholder="次数" value="${escapeHtml(set.reps)}" class="set-reps w-full bg-gray-900 p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
                                     <button onclick="this.parentElement.remove(); updateSetNumbers('${exerciseId}'); saveSessionToLocalStorage();" class="text-red-600 p-1 text-lg">×</button>
                                 `;
                                 setsContainer.appendChild(setDiv);
@@ -4072,17 +4453,17 @@
             const exerciseId = `ex-${Date.now()}`; // 为新动作生成唯一ID
             const exerciseDiv = document.createElement('div');
             exerciseDiv.id = exerciseId;
-            exerciseDiv.className = 'exercise-block bg-gray-800 p-3 rounded-lg border border-gray-600';
+            exerciseDiv.className = 'exercise-block bg-gray-800 p-3 border border-gray-600';
             exerciseDiv.innerHTML = `
                 <div class="flex items-center gap-2">
-                    <select class="exercise-select w-full bg-gray-900 rounded p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="handleExerciseSelectChange(this); saveSessionToLocalStorage();"></select>
+                    <select class="exercise-select w-full bg-gray-900 p-2 focus:outline-none focus:ring-2 focus:ring-blue-400" onchange="handleExerciseSelectChange(this); saveSessionToLocalStorage();"></select>
                     <button onclick="const select=this.previousElementSibling; if(select.value && select.value !== 'add_new') fetchAndShowLastWorkout(select);" class="text-blue-400 hover:text-blue-300 p-1" title="查看上次训练"><i class="fas fa-history"></i></button>
                     <button onclick="this.parentElement.parentElement.remove(); saveSessionToLocalStorage();" class="text-red-500 hover:text-red-400 p-1 text-2xl font-bold">×</button>
                 </div>
                 <div class="sets-container mt-3 space-y-2"></div>
                 <div class="flex gap-2 mt-2">
-                    <button onclick="addSetToExercise('${exerciseId}'); saveSessionToLocalStorage();" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 rounded p-2">+ 添加一组</button>
-                    <button onclick="addMultipleSetsToExercise('${exerciseId}', 3);" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 rounded p-2">+ 添加3组</button>
+                    <button onclick="addSetToExercise('${exerciseId}'); saveSessionToLocalStorage();" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 p-2">+ 添加一组</button>
+                    <button onclick="addMultipleSetsToExercise('${exerciseId}', 3);" class="add-set-btn flex-1 text-sm bg-gray-600 hover:bg-gray-500 p-2">+ 添加3组</button>
                 </div>
             `;
             document.getElementById('current-session-container').appendChild(exerciseDiv);
@@ -4138,9 +4519,9 @@
             setDiv.className = 'set-item flex items-center gap-2';
             setDiv.innerHTML = `
                 <span class="text-gray-400 w-12 text-sm">第${setCount}组</span>
-                <input type="text" placeholder="重量(kg)" value="${defaultWeight}" inputmode="decimal" class="set-weight w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" onfocus="if(this.value) this.dataset.prevValue=this.value; this.value='';" onblur="if(!this.value && this.dataset.prevValue) this.value=this.dataset.prevValue;" oninput="saveSessionToLocalStorage()">
+                <input type="text" placeholder="重量(kg)" value="${defaultWeight}" inputmode="decimal" class="set-weight w-full bg-gray-900 p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" onfocus="if(this.value) this.dataset.prevValue=this.value; this.value='';" onblur="if(!this.value && this.dataset.prevValue) this.value=this.dataset.prevValue;" oninput="saveSessionToLocalStorage()">
                 <span class="text-gray-500">x</span>
-                <input type="text" placeholder="次数" inputmode="numeric" class="set-reps w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
+                <input type="text" placeholder="次数" inputmode="numeric" class="set-reps w-full bg-gray-900 p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
                 <button onclick="this.parentElement.remove(); updateSetNumbers('${exerciseId}'); saveSessionToLocalStorage();" class="text-red-600 p-1 text-lg">×</button>
             `;
             setsContainer.appendChild(setDiv);
@@ -4173,9 +4554,9 @@
                     setDiv.className = 'set-item flex items-center gap-2';
                     setDiv.innerHTML = `
                         <span class="text-gray-400 w-12 text-sm">第${setCount}组</span>
-                        <input type="text" placeholder="重量(kg)" value="${finalWeight}" inputmode="decimal" class="set-weight w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" onfocus="if(this.value) this.dataset.prevValue=this.value; this.value='';" onblur="if(!this.value && this.dataset.prevValue) this.value=this.dataset.prevValue;" oninput="saveSessionToLocalStorage()">
+                        <input type="text" placeholder="重量(kg)" value="${finalWeight}" inputmode="decimal" class="set-weight w-full bg-gray-900 p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" onfocus="if(this.value) this.dataset.prevValue=this.value; this.value='';" onblur="if(!this.value && this.dataset.prevValue) this.value=this.dataset.prevValue;" oninput="saveSessionToLocalStorage()">
                         <span class="text-gray-500">x</span>
-                        <input type="text" placeholder="次数" inputmode="numeric" class="set-reps w-full bg-gray-900 rounded p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
+                        <input type="text" placeholder="次数" inputmode="numeric" class="set-reps w-full bg-gray-900 p-2 text-center focus:outline-none focus:ring-1 focus:ring-blue-400" oninput="saveSessionToLocalStorage()">
                         <button onclick="this.parentElement.remove(); updateSetNumbers('${exerciseId}'); saveSessionToLocalStorage();" class="text-red-600 p-1 text-lg">×</button>
                     `;
                     setsContainer.appendChild(setDiv);
@@ -4372,10 +4753,10 @@
                 let html = '';
                 sessions.forEach(session => {
                     html += `
-                        <div class="history-session bg-gray-700/50 p-4 rounded-lg border border-gray-600/50">
+                        <div class="history-session bg-gray-700/50 p-4 border border-gray-600/50">
                             <div class="flex justify-between items-center border-b border-gray-600 pb-2 mb-3">
                                 <h3 class="font-bold text-lg text-blue-300">${escapeHtml(session.session_date)}</h3>
-                                <button onclick="deleteSession(${safeInlineArg(session.uid)})" class="text-gray-500 hover:text-red-400 text-xl">🗑️</button>
+                                <button onclick="deleteSession(${safeInlineArg(session.uid)})" class="icon-button text-gray-500 hover:text-red-400" aria-label="删除训练记录" title="删除训练记录"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v5M14 11v5" /></svg></button>
                             </div>
                             <div class="space-y-3">
                     `;
@@ -4496,7 +4877,7 @@
                     const fragment = document.createDocumentFragment();
                     customExercises.forEach(ex => {
                         const row = document.createElement('div');
-                        row.className = 'exercise-item flex items-center justify-between bg-gray-800 p-3 rounded-lg border border-gray-600 mb-2';
+                        row.className = 'exercise-item flex items-center justify-between bg-gray-800 p-3 border border-gray-600 mb-2';
                         const label = document.createElement('span');
                         label.className = 'text-white text-lg flex-grow mr-2';
                         label.textContent = ex;
@@ -4778,11 +5159,10 @@
             if (document.getElementById('sw-update-banner')) return; // 已显示
             const banner = document.createElement('div');
             banner.id = 'sw-update-banner';
-            banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:12px;padding:10px 16px;background:#1e40af;color:#fff;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.3);';
             banner.innerHTML = `
-                <span>🚀 云端有新版本</span>
-                <button onclick="location.reload()" style="background:#fff;color:#1e40af;border:none;padding:4px 14px;border-radius:6px;font-size:13px;font-weight:bold;cursor:pointer;">立即更新</button>
-                <button onclick="this.parentElement.remove()" style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5);padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;">稍后</button>
+                <span>云端有新版本</span>
+                <button onclick="location.reload()" class="btn btn-primary">立即更新</button>
+                <button onclick="this.parentElement.remove()" class="btn btn-action">稍后</button>
             `;
             document.body.appendChild(banner);
         }
