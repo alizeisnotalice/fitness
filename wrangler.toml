@@ -3,6 +3,10 @@ name = "fitness-tracker"
 main = "src/index.js"
 compatibility_date = "2024-03-01"
 
+# 公用动作写权限：填写逗号分隔的 GitHub 用户名或数字 ID；未配置时只读。
+# 生产环境建议使用 `wrangler secret put COMMON_EXERCISE_ADMIN_IDS`。
+# [vars]
+# COMMON_EXERCISE_ADMIN_IDS = "github-login-or-id"
 
 # 将 D1 数据库绑定到 Worker
 [[d1_databases]]

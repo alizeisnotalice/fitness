@@ -130,17 +130,24 @@ wrangler d1 create fitness-data
 
 记下 `database_id`，并将其粘贴到 `wrangler.toml` 中。
 
-**2.应用数据库模式:** 将上面提供的 SQL 模式保存为一个文件 (例如 `schema.sql`)，然后使用 Wrangler 应用它：
+**2. 应用数据库模式:** 项目根目录中的 `Schema.sql` 是完整初始化脚本，使用 Wrangler 应用它：
 
 ```bash
-wrangler d1 execute fitness-data --file=./schema.sql # For remote deployment
+wrangler d1 execute fitness-data --remote --file=./Schema.sql
+```
+
+如果数据库已经存在，再依次执行同步字段和索引迁移：
+
+```bash
+npm run migrate:sync
+npm run migrate:indexes
 ```
 
 ### 3. 部署后端 API (Cloudflare Workers)
 
 本项目后端是一个简单的 API，用于管理训练动作和会话数据。
 
-1. ** `wrangler.toml` 文件**: 在 `worker` 文件夹的根目录下的 `wrangler.toml` 文件。这个文件是 Cloudflare Workers 的配置文件。
+1. ** `wrangler.toml` 文件**: 项目根目录下的 `wrangler.toml` 是 Cloudflare Workers 配置文件。
 
    ```ini
    name = "fitness-tracker-api" # 你的Worker名称，全局唯一
@@ -163,10 +170,9 @@ wrangler d1 execute fitness-data --file=./schema.sql # For remote deployment
 
    这会打开一个浏览器窗口，让你登录 Cloudflare 账号并授权 Wrangler。
 
-3. **部署 Workers**: 在项目根目录（包含 `worker` 文件夹）下，进入 `worker` 目录：
+3. **部署 Workers**: 在项目根目录执行：
 
    ```
-   cd worker
    wrangler deploy
    ```
 
@@ -196,19 +202,13 @@ wrangler d1 execute fitness-data --file=./schema.sql # For remote deployment
 
    **index.html在public文件夹中**
 
-2. **更新前端 `index.html` 中的 API_BASE_URL**: 打开你的前端 `index.html` 文件，找到 `API_BASE_URL` 常量：
+2. **配置公共动作管理员**: 在 Cloudflare Worker 的环境变量中设置 `COMMON_EXERCISE_ADMIN_IDS`，填写逗号分隔的 GitHub 用户名或 GitHub 数字 ID。未配置时公共动作保持只读。
 
-   ```
-   const API_BASE_URL = 'https://fitness-tracker.497457669.workers.dev/api'; // 请将此URL替换为你的Workers部署后的实际URL
-   ```
+3. **更新前端 `index.html` 中的 API_BASE_URL**: 使用 `npm run deploy:frontend` 部署时，脚本会临时注入生产 API 地址；本地文件保持空地址。
 
-   将其替换为你在 Workers 部署后获得的实际 API URL。**确保 URL 以 `/api` 结尾，因为你的 Workers 后端是处理 `/api` 路径的。** 例如：
+   本地源码中的 API 地址保持为空；部署脚本会临时注入实际的 Workers URL。API 地址必须以 `/api` 结尾，因为 Worker 使用 `/api` 作为路由前缀。
 
-   ```
-   const API_BASE_URL = 'https://fitness-tracker-api.<你的子域名>.workers.dev/api';
-   ```
-
-3. **重新部署 Pages**: 如果你是 Git 部署，修改 `index.html` 并推送到你的 Git 仓库，Pages 会自动触发重新部署。 如果你是直接上传，则需要重新上传修改后的 `index.html` 文件。
+4. **重新部署 Pages**: 如果你是 Git 部署，修改 `index.html` 并推送到你的 Git 仓库，Pages 会自动触发重新部署。 如果你是直接上传，则需要重新上传修改后的 `index.html` 文件。
 
 ### 5. 运行项目
 

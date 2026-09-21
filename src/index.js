@@ -18,6 +18,7 @@ const app = new Hono().basePath('/api');
 const FRONTEND_URL = 'https://fitness-dpa.pages.dev';
 const SESSION_COOKIE_NAME = 'session_token';
 const SESSION_MAX_AGE = 365 * 24 * 60 * 60; // 1 year in seconds
+const COMMON_EXERCISE_ADMIN_ENV = 'COMMON_EXERCISE_ADMIN_IDS';
 
 function generateToken() {
   const array = new Uint8Array(32);
@@ -41,6 +42,13 @@ const UUID_SQL = "lower(hex(randomblob(8)) || '-' || hex(randomblob(4)) || '-4' 
 async function ensureSyncColumns(env) {
   if (syncSchemaReady) return;
   const now = new Date().toISOString();
+  try {
+    await env.DB.prepare(`CREATE TABLE IF NOT EXISTS common_exercises (
+      exercise_name TEXT PRIMARY KEY
+    )`).run();
+  } catch (e) {
+    console.error('common exercises schema initialization error:', e);
+  }
   const alters = [
     "ALTER TABLE workout_sessions ADD COLUMN uid TEXT",
     "ALTER TABLE workout_sessions ADD COLUMN updated_at TEXT",
@@ -131,6 +139,38 @@ const requireAuth = async (c, next) => {
   const userId = c.get('userId');
   if (!userId) {
     return c.json({ error: 'Authentication required' }, 401);
+  }
+  await next();
+};
+
+function configuredAdminIds(env) {
+  return new Set(
+    String(env?.[COMMON_EXERCISE_ADMIN_ENV] || '')
+      .split(',')
+      .map(value => value.trim().toLowerCase())
+      .filter(Boolean)
+  );
+}
+
+async function isCommonExerciseAdmin(c) {
+  const allowed = configuredAdminIds(c.env);
+  if (allowed.size === 0) return false;
+  const userId = c.get('userId');
+  if (!userId) return false;
+
+  const { results } = await c.env.DB.prepare(
+    'SELECT id, github_id, username FROM users WHERE id = ? LIMIT 1'
+  ).bind(userId).all();
+  const user = results[0];
+  if (!user) return false;
+  return [user.id, user.github_id, user.username]
+    .filter(value => value !== null && typeof value !== 'undefined')
+    .some(value => allowed.has(String(value).toLowerCase()));
+}
+
+const requireCommonExerciseAdmin = async (c, next) => {
+  if (!(await isCommonExerciseAdmin(c))) {
+    return c.json({ error: 'Common exercise administration requires an approved administrator.' }, 403);
   }
   await next();
 };
@@ -232,12 +272,7 @@ app.get('/auth/callback', async (c) => {
       ).bind(githubUser.id, githubUser.login, githubUser.avatar_url).run();
       userId = result.meta.last_row_id;
 
-      await c.env.DB.prepare(
-        "UPDATE workout_sessions SET user_id = ? WHERE user_id IS NULL"
-      ).bind(userId).run();
-      await c.env.DB.prepare(
-        "UPDATE custom_exercises SET user_id = ? WHERE user_id IS NULL"
-      ).bind(userId).run();
+      // 历史匿名记录保持未归属状态，不能在首次登录时自动转给新用户。
     }
 
     // Create session
@@ -273,11 +308,13 @@ app.get('/auth/me', async (c) => {
 
   try {
     const { results } = await c.env.DB.prepare(
-      "SELECT id, username, avatar_url FROM users WHERE id = ?"
+      "SELECT id, github_id, username, avatar_url FROM users WHERE id = ?"
     ).bind(userId).all();
 
     if (results.length > 0) {
-      return c.json({ user: results[0] });
+      const { github_id: _githubId, ...user } = results[0];
+      user.is_common_exercise_admin = await isCommonExerciseAdmin(c);
+      return c.json({ user });
     }
     return c.json({ user: null });
   } catch (e) {
@@ -315,7 +352,7 @@ app.get('/exercises/:muscle', requireAuth, async (c) => {
   }
   try {
     const { results: customResults } = await c.env.DB.prepare(
-      "SELECT exercise_name FROM custom_exercises WHERE muscle_group = ? AND (user_id = ? OR user_id IS NULL) AND IFNULL(deleted,0) = 0 ORDER BY exercise_name"
+      "SELECT exercise_name FROM custom_exercises WHERE muscle_group = ? AND user_id = ? AND IFNULL(deleted,0) = 0 ORDER BY exercise_name"
     ).bind(muscle, userId).all();
 
     const { results: commonResults } = await c.env.DB.prepare(
@@ -326,7 +363,7 @@ app.get('/exercises/:muscle', requireAuth, async (c) => {
     const { results: freqResults } = await c.env.DB.prepare(
       `SELECT je.value->>'$.exercise_name' AS name, COUNT(*) AS cnt
        FROM workout_sessions ws, json_each(ws.exercises_data) je
-       WHERE ws.muscle_group = ? AND (ws.user_id = ? OR ws.user_id IS NULL) AND IFNULL(ws.deleted,0) = 0
+       WHERE ws.muscle_group = ? AND ws.user_id = ? AND IFNULL(ws.deleted,0) = 0
        GROUP BY name`
     ).bind(muscle, userId).all();
     const frequency = {};
@@ -370,16 +407,6 @@ app.post('/exercises', requireAuth, async (c) => {
     }
     const now = new Date().toISOString();
     const recordUid = uid || generateUUID();
-    // 先认领 user_id IS NULL 的同名历史记录（如果有）
-    const { results: nullOwned } = await c.env.DB.prepare(
-      "SELECT id FROM custom_exercises WHERE muscle_group = ? AND exercise_name = ? AND user_id IS NULL AND IFNULL(deleted,0) = 0 LIMIT 1"
-    ).bind(muscle_group, exercise_name.trim()).all();
-    if (nullOwned.length > 0) {
-      await c.env.DB.prepare(
-        "UPDATE custom_exercises SET user_id = ?, uid = ?, updated_at = ?, deleted = 0 WHERE id = ?"
-      ).bind(userId, recordUid, now, nullOwned[0].id).run();
-      return c.json({ success: true, message: 'Exercise added successfully.', uid: recordUid });
-    }
     // 若存在同名记录（含软删除的）则复活并更新时间戳，否则插入
     await c.env.DB.prepare(
       `INSERT INTO custom_exercises (uid, muscle_group, exercise_name, updated_at, deleted, user_id) VALUES (?,?,?,?,0,?)
@@ -408,7 +435,7 @@ app.put('/exercises', requireAuth, async (c) => {
 
     if (muscle_group) {
       const customResult = await c.env.DB.prepare(
-        "UPDATE custom_exercises SET exercise_name = ?, updated_at = ? WHERE muscle_group = ? AND exercise_name = ? AND (user_id = ? OR user_id IS NULL) AND IFNULL(deleted,0) = 0"
+        "UPDATE custom_exercises SET exercise_name = ?, updated_at = ? WHERE muscle_group = ? AND exercise_name = ? AND user_id = ? AND IFNULL(deleted,0) = 0"
       ).bind(trimmedNewName, now, muscle_group, old_name, userId).run();
 
       if (customResult.success && customResult.meta.changes > 0) {
@@ -416,6 +443,9 @@ app.put('/exercises', requireAuth, async (c) => {
       }
     }
 
+    if (!(await isCommonExerciseAdmin(c))) {
+      return c.json({ error: 'Common exercise administration requires an approved administrator.' }, 403);
+    }
     const commonResult = await c.env.DB.prepare(
       "UPDATE common_exercises SET exercise_name = ?, updated_at = ? WHERE exercise_name = ? AND IFNULL(deleted,0) = 0"
     ).bind(trimmedNewName, now, old_name).run();
@@ -444,8 +474,8 @@ app.delete('/exercises', requireAuth, async (c) => {
     const now = new Date().toISOString();
     const { success } = await c.env.DB.prepare(
       uid
-        ? "UPDATE custom_exercises SET deleted = 1, updated_at = ? WHERE (uid = ? OR (muscle_group = ? AND exercise_name = ?)) AND (user_id = ? OR user_id IS NULL)"
-        : "UPDATE custom_exercises SET deleted = 1, updated_at = ? WHERE muscle_group = ? AND exercise_name = ? AND (user_id = ? OR user_id IS NULL)"
+        ? "UPDATE custom_exercises SET deleted = 1, updated_at = ? WHERE (uid = ? OR (muscle_group = ? AND exercise_name = ?)) AND user_id = ?"
+        : "UPDATE custom_exercises SET deleted = 1, updated_at = ? WHERE muscle_group = ? AND exercise_name = ? AND user_id = ?"
     ).bind(...(uid ? [now, uid, muscle_group, exercise_name, userId] : [now, muscle_group, exercise_name, userId])).run();
 
     if (success) {
@@ -476,7 +506,7 @@ app.get('/common-exercises', async (c) => {
 });
 
 // 6. Add a new common exercise
-app.post('/common-exercises', requireAuth, async (c) => {
+app.post('/common-exercises', requireAuth, requireCommonExerciseAdmin, async (c) => {
   try {
     await ensureSyncColumns(c.env);
     const { exercise_name } = await c.req.json();
@@ -498,7 +528,7 @@ app.post('/common-exercises', requireAuth, async (c) => {
 });
 
 // 7. Update a common exercise
-app.put('/common-exercises', requireAuth, async (c) => {
+app.put('/common-exercises', requireAuth, requireCommonExerciseAdmin, async (c) => {
   try {
     await ensureSyncColumns(c.env);
     const { old_name, new_name } = await c.req.json();
@@ -523,7 +553,7 @@ app.put('/common-exercises', requireAuth, async (c) => {
 });
 
 // 8. Delete a common exercise（软删除，支持同步）
-app.delete('/common-exercises', requireAuth, async (c) => {
+app.delete('/common-exercises', requireAuth, requireCommonExerciseAdmin, async (c) => {
   try {
     await ensureSyncColumns(c.env);
     const { exercise_name } = await c.req.json();
@@ -577,12 +607,12 @@ app.post('/sync', requireAuth, async (c) => {
     const serverWMap = new Map();
     if (since) {
       const { results } = await c.env.DB.prepare(
-        "SELECT uid, muscle_group, session_date, exercises_data, updated_at, deleted FROM workout_sessions WHERE (user_id = ? OR user_id IS NULL) AND updated_at > ?"
+        "SELECT uid, muscle_group, session_date, exercises_data, updated_at, deleted FROM workout_sessions WHERE user_id = ? AND updated_at > ?"
       ).bind(userId, since).all();
       serverWorkouts = results;
     } else {
       const { results } = await c.env.DB.prepare(
-        "SELECT uid, muscle_group, session_date, exercises_data, updated_at, deleted FROM workout_sessions WHERE (user_id = ? OR user_id IS NULL)"
+        "SELECT uid, muscle_group, session_date, exercises_data, updated_at, deleted FROM workout_sessions WHERE user_id = ?"
       ).bind(userId).all();
       serverWorkouts = results;
       results.forEach(w => serverWMap.set(w.uid, w));
@@ -595,8 +625,8 @@ app.post('/sync', requireAuth, async (c) => {
       if (!sw && since) {
         // 增量模式：按 uid 精确查询（唯一索引，单行读取）
         const { results: swRows } = await c.env.DB.prepare(
-          "SELECT uid, muscle_group, session_date, exercises_data, updated_at, deleted FROM workout_sessions WHERE uid = ? LIMIT 1"
-        ).bind(cw.uid).all();
+          "SELECT uid, muscle_group, session_date, exercises_data, updated_at, deleted FROM workout_sessions WHERE uid = ? AND user_id = ? LIMIT 1"
+        ).bind(cw.uid, userId).all();
         sw = swRows[0];
       }
       const clientUpdatedAt = cw.updated_at || '';
@@ -612,8 +642,8 @@ app.post('/sync', requireAuth, async (c) => {
         // 客户端新 → 更新服务器
         try {
           await c.env.DB.prepare(
-            "UPDATE workout_sessions SET muscle_group=?, session_date=?, exercises_data=?, updated_at=?, deleted=? WHERE uid=?"
-          ).bind(cw.muscle_group, cw.session_date || sw.session_date, JSON.stringify(cw.exercises_data), clientUpdatedAt, clientDeleted, cw.uid).run();
+            "UPDATE workout_sessions SET muscle_group=?, session_date=?, exercises_data=?, updated_at=?, deleted=? WHERE uid=? AND user_id=?"
+          ).bind(cw.muscle_group, cw.session_date || sw.session_date, JSON.stringify(cw.exercises_data), clientUpdatedAt, clientDeleted, cw.uid, userId).run();
         } catch (e) { console.error('sync update workout:', e); }
       }
     }
@@ -632,12 +662,12 @@ app.post('/sync', requireAuth, async (c) => {
     const serverCMap = new Map();
     if (since) {
       const { results } = await c.env.DB.prepare(
-        "SELECT uid, muscle_group, exercise_name, updated_at, deleted FROM custom_exercises WHERE (user_id = ? OR user_id IS NULL) AND updated_at > ?"
+        "SELECT uid, muscle_group, exercise_name, updated_at, deleted FROM custom_exercises WHERE user_id = ? AND updated_at > ?"
       ).bind(userId, since).all();
       serverCustom = results;
     } else {
       const { results } = await c.env.DB.prepare(
-        "SELECT uid, muscle_group, exercise_name, updated_at, deleted FROM custom_exercises WHERE (user_id = ? OR user_id IS NULL)"
+        "SELECT uid, muscle_group, exercise_name, updated_at, deleted FROM custom_exercises WHERE user_id = ?"
       ).bind(userId).all();
       serverCustom = results;
       results.filter(x => x.uid).forEach(x => serverCMap.set(x.uid, x));
@@ -650,8 +680,8 @@ app.post('/sync', requireAuth, async (c) => {
       if (!sc && since) {
         // 增量模式：按 uid 精确查询（唯一索引，单行读取）
         const { results: scRows } = await c.env.DB.prepare(
-          "SELECT uid, muscle_group, exercise_name, updated_at, deleted FROM custom_exercises WHERE uid = ? LIMIT 1"
-        ).bind(cc.uid).all();
+          "SELECT uid, muscle_group, exercise_name, updated_at, deleted FROM custom_exercises WHERE uid = ? AND user_id = ? LIMIT 1"
+        ).bind(cc.uid, userId).all();
         sc = scRows[0];
       }
       const clientUpdatedAt = cc.updated_at || '';
@@ -659,15 +689,15 @@ app.post('/sync', requireAuth, async (c) => {
       if (!sc) {
         // 可能两端各自创建了同 (muscle,name) 的记录 → 按 (muscle,name,user) 查找合并
         const { results: dupRows } = await c.env.DB.prepare(
-          "SELECT uid, updated_at FROM custom_exercises WHERE muscle_group=? AND exercise_name=? AND (user_id=? OR user_id IS NULL) AND uid IS NOT NULL LIMIT 1"
+          "SELECT uid, updated_at FROM custom_exercises WHERE muscle_group=? AND exercise_name=? AND user_id=? AND uid IS NOT NULL LIMIT 1"
         ).bind(cc.muscle_group, cc.exercise_name, userId).all();
         if (dupRows.length > 0) {
           // 已存在同义记录：比较时间戳，客户端新则覆盖该行（沿用服务器uid，返回给客户端合并）
           if (clientUpdatedAt > (dupRows[0].updated_at || '')) {
             try {
               await c.env.DB.prepare(
-                "UPDATE custom_exercises SET updated_at=?, deleted=? WHERE uid=?"
-              ).bind(clientUpdatedAt, clientDeleted, dupRows[0].uid).run();
+                "UPDATE custom_exercises SET updated_at=?, deleted=? WHERE uid=? AND user_id=?"
+              ).bind(clientUpdatedAt, clientDeleted, dupRows[0].uid, userId).run();
             } catch (e) {}
           }
           continue; // 该记录会在pull阶段按服务器uid返回
@@ -680,8 +710,8 @@ app.post('/sync', requireAuth, async (c) => {
       } else if (clientUpdatedAt > (sc.updated_at || '')) {
         try {
           await c.env.DB.prepare(
-            "UPDATE custom_exercises SET muscle_group=?, exercise_name=?, updated_at=?, deleted=? WHERE uid=?"
-          ).bind(cc.muscle_group, cc.exercise_name, clientUpdatedAt, clientDeleted, cc.uid).run();
+            "UPDATE custom_exercises SET muscle_group=?, exercise_name=?, updated_at=?, deleted=? WHERE uid=? AND user_id=?"
+          ).bind(cc.muscle_group, cc.exercise_name, clientUpdatedAt, clientDeleted, cc.uid, userId).run();
         } catch (e) { console.error('sync update custom:', e); }
       }
     }
@@ -700,23 +730,25 @@ app.post('/sync', requireAuth, async (c) => {
     const serverCommonMap = new Map(serverCommon.map(x => [x.exercise_name, x]));
     const clientCommonMap = new Map(clientCommon.map(x => [x.exercise_name, x]));
 
-    for (const cce of clientCommon) {
-      if (!cce.exercise_name) continue;
-      const sce = serverCommonMap.get(cce.exercise_name);
-      const clientUpdatedAt = cce.updated_at || '';
-      const clientDeleted = cce.deleted ? 1 : 0;
-      if (!sce) {
-        try {
-          await c.env.DB.prepare(
-            "INSERT OR IGNORE INTO common_exercises (exercise_name, updated_at, deleted) VALUES (?,?,?)"
-          ).bind(cce.exercise_name, clientUpdatedAt, clientDeleted).run();
-        } catch (e) { console.error('sync insert common:', e); }
-      } else if (clientUpdatedAt > (sce.updated_at || '')) {
-        try {
-          await c.env.DB.prepare(
-            "UPDATE common_exercises SET updated_at=?, deleted=? WHERE exercise_name=?"
-          ).bind(clientUpdatedAt, clientDeleted, cce.exercise_name).run();
-        } catch (e) { console.error('sync update common:', e); }
+    if (await isCommonExerciseAdmin(c)) {
+      for (const cce of clientCommon) {
+        if (!cce.exercise_name) continue;
+        const sce = serverCommonMap.get(cce.exercise_name);
+        const clientUpdatedAt = cce.updated_at || '';
+        const clientDeleted = cce.deleted ? 1 : 0;
+        if (!sce) {
+          try {
+            await c.env.DB.prepare(
+              "INSERT OR IGNORE INTO common_exercises (exercise_name, updated_at, deleted) VALUES (?,?,?)"
+            ).bind(cce.exercise_name, clientUpdatedAt, clientDeleted).run();
+          } catch (e) { console.error('sync insert common:', e); }
+        } else if (clientUpdatedAt > (sce.updated_at || '')) {
+          try {
+            await c.env.DB.prepare(
+              "UPDATE common_exercises SET updated_at=?, deleted=? WHERE exercise_name=?"
+            ).bind(clientUpdatedAt, clientDeleted, cce.exercise_name).run();
+          } catch (e) { console.error('sync update common:', e); }
+        }
       }
     }
     for (const sce of serverCommon) {
@@ -789,7 +821,7 @@ app.get('/last-workout/:muscle/:exercise', requireAuth, async (c) => {
     const likePattern = `%"exercise_name"%${escapedExercise}"%`;
 
     const { results } = await c.env.DB.prepare(
-      "SELECT exercises_data, session_date FROM workout_sessions WHERE muscle_group = ? AND (user_id = ? OR user_id IS NULL) AND IFNULL(deleted,0) = 0 AND exercises_data LIKE ? ESCAPE '\\' ORDER BY session_date DESC, session_id DESC LIMIT 50"
+      "SELECT exercises_data, session_date FROM workout_sessions WHERE muscle_group = ? AND user_id = ? AND IFNULL(deleted,0) = 0 AND exercises_data LIKE ? ESCAPE '\\' ORDER BY session_date DESC, session_id DESC LIMIT 50"
     ).bind(muscle, userId, likePattern).all();
 
     // 在结果中精确查找该动作（容错：trim + 大小写不敏感）
@@ -832,7 +864,7 @@ app.get('/history/:muscle', requireAuth, async (c) => {
   }
   try {
     const { results } = await c.env.DB.prepare(
-      "SELECT session_id, uid, session_date, exercises_data FROM workout_sessions WHERE muscle_group = ? AND (user_id = ? OR user_id IS NULL) AND IFNULL(deleted,0) = 0 ORDER BY session_date DESC, session_id DESC"
+      "SELECT session_id, uid, session_date, exercises_data FROM workout_sessions WHERE muscle_group = ? AND user_id = ? AND IFNULL(deleted,0) = 0 ORDER BY session_date DESC, session_id DESC"
     ).bind(muscle, userId).all();
 
     // Before sending the data, parse the JSON string in 'exercises_data' back into an object
@@ -892,7 +924,7 @@ app.delete('/session/:id', requireAuth, async (c) => {
     await ensureSyncColumns(c.env);
     const now = new Date().toISOString();
     const { success } = await c.env.DB.prepare(
-      "UPDATE workout_sessions SET deleted = 1, updated_at = ? WHERE (session_id = ? OR uid = ?) AND (user_id = ? OR user_id IS NULL)"
+      "UPDATE workout_sessions SET deleted = 1, updated_at = ? WHERE (session_id = ? OR uid = ?) AND user_id = ?"
     ).bind(now, sessionId, sessionId, userId).run();
 
     if (success) {

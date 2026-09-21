@@ -21,6 +21,13 @@ CREATE TABLE IF NOT EXISTS sessions (
   created_at TEXT DEFAULT (datetime('now', 'localtime'))
 );
 
+-- 公用动作表：所有用户可读，写入由管理员白名单控制
+CREATE TABLE IF NOT EXISTS common_exercises (
+  exercise_name TEXT PRIMARY KEY,
+  updated_at TEXT DEFAULT (datetime('now')),
+  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1))
+);
+
 -- 新建: 自定义动作表
 -- 用于存储用户添加的动作，方便后续从下拉框选择
 CREATE TABLE IF NOT EXISTS custom_exercises (
@@ -28,6 +35,9 @@ CREATE TABLE IF NOT EXISTS custom_exercises (
   muscle_group TEXT NOT NULL,
   exercise_name TEXT NOT NULL,
   user_id INTEGER REFERENCES users(id),
+  uid TEXT,
+  updated_at TEXT,
+  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),
   UNIQUE (muscle_group, exercise_name, user_id)
 );
 
@@ -39,23 +49,20 @@ CREATE TABLE IF NOT EXISTS workout_sessions (
   session_date TEXT NOT NULL,
   exercises_data TEXT NOT NULL,
   user_id INTEGER REFERENCES users(id),
+  uid TEXT UNIQUE,
+  updated_at TEXT,
+  deleted INTEGER NOT NULL DEFAULT 0 CHECK (deleted IN (0, 1)),
   created_at TEXT DEFAULT (datetime('now', 'localtime'))
 );
 
--- (可选) 为常用动作预置一些数据，提升初次使用体验
-INSERT OR IGNORE INTO custom_exercises (muscle_group, exercise_name) VALUES
-('chest', '平板卧推'),
-('chest', '上斜卧推'),
-('chest', '哑铃飞鸟'),
-('back', '引体向上'),
-('back', '高位下拉'),
-('back', '坐姿划船'),
-('shoulders', '站姿推举'),
-('shoulders', '侧平举'),
-('legs', '深蹲'),
-('legs', '腿举');
+-- 公用动作种子数据，避免匿名 custom_exercises 记录被错误认领
+INSERT OR IGNORE INTO common_exercises (exercise_name) VALUES
+('平板卧推'), ('上斜卧推'), ('哑铃飞鸟'),
+('引体向上'), ('高位下拉'), ('坐姿划船'),
+('站姿推举'), ('侧平举'), ('深蹲'), ('腿举');
 
 -- 查询性能索引（避免跨用户全表扫描，见 migrations/003_add_indexes.sql）
 CREATE INDEX IF NOT EXISTS idx_ws_user_muscle_date ON workout_sessions(user_id, muscle_group, session_date, session_id);
 CREATE INDEX IF NOT EXISTS idx_ws_user_updated ON workout_sessions(user_id, updated_at);
 CREATE INDEX IF NOT EXISTS idx_ce_user_muscle ON custom_exercises(user_id, muscle_group);
+CREATE INDEX IF NOT EXISTS idx_common_ex_updated ON common_exercises(updated_at);
